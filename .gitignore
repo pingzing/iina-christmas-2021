@@ -3,6 +3,7 @@
 
 #Project-Specific
 raw_assets/
+do not commit/
 
 # User-specific files
 *.suo
