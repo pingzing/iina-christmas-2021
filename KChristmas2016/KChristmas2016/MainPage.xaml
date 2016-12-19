@@ -255,7 +255,45 @@
                        HorizontalTextAlignment="Center"
                        Text="GLASSES!"/>
             </StackLayout>
-            
+
+            <Button x:Name="Panel5_NextButton"
+                    Grid.Row="1"
+                    Clicked="Panel5_NextButton_Clicked"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    HorizontalOptions="FillAndExpand"
+                    Scale="0"
+                    Text="HOLY SHIT"/>
+        </Grid>
+
+        <Grid x:Name="Panel6"
+              IsVisible="False">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackLayout x:Name="Panel6Content" 
+                         HorizontalOptions="CenterAndExpand"
+                         VerticalOptions="CenterAndExpand">
+                <Image Source="{ext:ImageExtension reading_glasses_small.png}"/>
+                <Label x:Name="Panel6_Caption"
+                       HorizontalTextAlignment="Center"
+                       Opacity="0"
+                       Text="When you think you're ready...press the button to accept your gift."/>
+
+            </StackLayout>
+
+            <Button x:Name="Panel6_NextButton"
+                    Grid.Row="1"
+                    BackgroundColor="Green"
+                    TextColor="White"
+                    Opacity="0"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="End"
+                    InputTransparent="True"
+                    Text="I'M READY"/>
+
         </Grid>
 
     </Grid>
