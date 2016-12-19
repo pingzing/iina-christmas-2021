@@ -7,8 +7,22 @@
              Appearing="ContentPage_Appearing">
 
     <Grid x:Name="ContentRoot" Padding="10" BackgroundColor="Transparent">
-        <Grid x:Name="Panel1"
-              BackgroundColor="Transparent"
+
+        <Grid x:Name="TooEarlyPanel"
+              IsVisible="False">
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Image HorizontalOptions="CenterAndExpand"
+                       Source="{ext:ImageExtension gift_small.png}"/>
+                <Label HorizontalTextAlignment="Center" 
+                       Text="Hey, not yet!"
+                       Style="{DynamicResource SubtitleStyle}"/>
+                <Label HorizontalTextAlignment="Center" 
+                       Text="It's not Christmas yet! You're going to have to wait! Come back on the 24th!"/>
+            </StackLayout>
+        </Grid>
+
+        <!--Panel 1 Start-->
+        <Grid x:Name="Panel1"              
               IsVisible="False">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -16,10 +30,10 @@
             </Grid.RowDefinitions>
 
             <StackLayout x:Name="Panel1Content"
-                         HorizontalOptions="CenterAndExpand"
+                         HorizontalOptions="CenterAndExpand" 
                          VerticalOptions="CenterAndExpand">
-                <Image Source="{ext:ImageExtension gift_small.png}"/>
-                <Label Text="Caption"/>
+                <Label HorizontalTextAlignment="Center" 
+                       Text="It's finally time! Are you ready to see what you're getting for Christmas?"/>
             </StackLayout>
 
             <Button x:Name="Panel1NextButton"
@@ -27,9 +41,11 @@
                     BackgroundColor="Green"
                     Clicked="Panel1NextButton_Clicked"
                     HorizontalOptions="FillAndExpand" VerticalOptions="End"
-                    Text="Next"/>
+                    Text="YES!"/>
         </Grid>
+        <!--Panel 1 End-->
 
+        <!--Panel 2 Start-->
         <Grid x:Name="Panel2"
               IsVisible="False">
             <Grid.RowDefinitions>
@@ -37,19 +53,210 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <StackLayout x:Name="Panel2Content"
+            <Grid x:Name="Panel2Content"
                          HorizontalOptions="CenterAndExpand"
-                         VerticalOptions="CenterAndExpand">
-                <Image/>
-                <Label Text="Caption2!"/>
-            </StackLayout>
+                         VerticalOptions="CenterAndExpand"
+                         RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <!--Screwy row layout here so that the gift_top overdraws the gift_base-->
+                <Button Grid.Row="1" 
+                        Image="{ext:ImageExtension gift_base_small.png}"
+                        Clicked="Panel2Gift_Clicked"/>
+                <Image x:Name="Panel2_GiftTop" 
+                       Grid.Row="0" 
+                       Margin="0, 0, 0, -20"
+                       Source="{ext:ImageExtension gift_top_small.png}"/>
+                <Label x:Name="Panel2_InstructionText"
+                       Grid.Row="2" 
+                       HorizontalTextAlignment="Center" 
+                       Margin="0, 10, 0, 0"
+                       Text="Tap the gift to open it..."/>
+                <Label x:Name="Panel2_TeaserText"
+                       Grid.Row="2"
+                       HorizontalTextAlignment="Center" 
+                       Margin="0, 10, 0, 0"
+                       Text="Ready to peek inside?"
+                       Opacity="0"/>
+            </Grid>
 
             <Button x:Name="Panel2NextButton"
                     Grid.Row="1"
+                    Clicked="Panel2NextButton_Clicked"
                     BackgroundColor="Green"
                     HorizontalOptions="FillAndExpand" VerticalOptions="End"
-                    Text="Next"/>
+                    InputTransparent="True"
+                    Opacity="0"
+                    Text="OMGWTFBBQ YESSSS"/>
+        </Grid>
+        <!--Panel 2 End-->
+
+        <!--Panel 3 start-->
+        <Grid x:Name="Panel3"
+              IsVisible="False">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="Panel3Content"
+                  HorizontalOptions="CenterAndExpand"
+                  VerticalOptions="CenterAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Image x:Name="Panel3_HighBlurGlasses"
+                       Grid.Row="0"
+                       HorizontalOptions="CenterAndExpand"
+                       Source="{ext:ImageExtension reading_glasses_small_high_blur.png}"/>
+                <Label x:Name="Panel3_Caption1"
+                       Grid.Row="1"
+                       HorizontalTextAlignment="Center" 
+                       Scale="0"
+                       FontSize="Large"
+                       Text="TA-DA!"/>
+                <Label x:Name="Panel3_Caption2Line1"
+                       Grid.Row="1"
+                       HorizontalTextAlignment="Center"
+                       Opacity="0"
+                       Text="Wait, what."/>
+                <Label x:Name="Panel3_Caption2Line2"
+                       Grid.Row="2"
+                       HorizontalTextAlignment="Center"
+                       Opacity="0"
+                       Text="That uh, wasn't supposed to happen. Maybe if you just...press the button again?"/>
+
+            </Grid>
+
+            <Button x:Name="Panel3_NextButton1"
+                    Grid.Row="1"
+                    Clicked="Panel3_NextButton1_Clicked"
+                    BackgroundColor="Green"
+                    HorizontalOptions="FillAndExpand"
+                    VerticalOptions="End"
+                    Text="wat."/>
+            <Button x:Name="Panel3_NextButton2"
+                    Grid.Row="1"
+                    Clicked="Panel3_NextButton2_Clicked"
+                    BackgroundColor="Green"
+                    HorizontalOptions="FillAndExpand"
+                    IsVisible="False"
+                    Opacity="0"
+                    VerticalOptions="End"
+                    Text="O...kay..."/>
+        </Grid>
+        <!--End panel 3-->
+
+        <!--Start Panel 4-->
+        <Grid x:Name="Panel4"
+              IsVisible="False">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="Panel4Content"
+                  HorizontalOptions="CenterAndExpand"
+                  VerticalOptions="CenterAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Image x:Name="Panel4_MediumBlurGlasses"
+                       Grid.Row="0"
+                       HorizontalOptions="CenterAndExpand"
+                       Source="{ext:ImageExtension reading_glasses_small_medium_blur.png}"/>
+                <Label x:Name="Panel4_Caption1"
+                       Grid.Row="1"
+                       HorizontalTextAlignment="Center"
+                       FontSize="Large"
+                       Scale="0"
+                       Text="TA-DA!"/>
+                <Label x:Name="Panel4_Caption2Line1"
+                       Grid.Row="1"
+                       HorizontalTextAlignment="Center"
+                       Opacity="0"
+                       Text="Wait."/>
+                <Label x:Name="Panel4_Caption2Line2"
+                       Grid.Row="2"
+                       HorizontalTextAlignment="Center"
+                       Opacity="0"
+                       Text="No."/>
+                <Label x:Name="Panel4_Caption2Line3"
+                       Grid.Row="3"
+                       HorizontalTextAlignment="Center"
+                       Opacity="0"
+                       Text="It's still broken!"/>
+                <Label x:Name="Panel4_Caption3Line1"
+                       Grid.Row="1"
+                       Opacity="0"
+                       HorizontalTextAlignment="Center"
+                       Text="Okay. Let's try this one more time, all right?"/>
+                <Label x:Name="Panel4_Caption3Line2"
+                       Grid.Row="2"
+                       Opacity="0"
+                       HorizontalTextAlignment="Center"
+                       Text="Click the button when you're ready!"/>
+
+            </Grid>
+
+            <Button x:Name="Panel4_NextButton"
+                    Grid.Row="1"
+                    Clicked="Panel4_NextButton_Clicked"
+                    BackgroundColor="Green"
+                    HorizontalOptions="FillAndExpand"
+                    InputTransparent="True"
+                    Opacity="0"
+                    VerticalOptions="End"
+                    Text="If you insist..."/>
+        </Grid>
+        <!--End Panel 4-->
+
+        <Grid x:Name="Panel5"
+              IsVisible="False">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackLayout x:Name="Panel5Content"
+                         HorizontalOptions="CenterAndExpand" 
+                         VerticalOptions="CenterAndExpand">
+                <Image Source="{ext:ImageExtension reading_glasses_small.png}"
+                       HorizontalOptions="CenterAndExpand"/>
+                <Label x:Name="Panel5_Caption1"
+                       FontSize="Large"
+                       Scale="0"
+                       HorizontalTextAlignment="Center"
+                       Text="TA-DA!"/>
+                <Label x:Name="Panel5_Caption2"
+                       Scale="0"
+                       FontSize="Large"
+                       TranslationY="50"
+                       HorizontalTextAlignment="Center"
+                       Text="BRAND"/>
+                <Label x:Name="Panel5_Caption3"
+                       Scale="0"
+                       FontSize="Large"
+                       HorizontalTextAlignment="Center"
+                       Text="NEW"/>
+                <Label x:Name="Panel5_Caption4"
+                       Scale="0"
+                       TranslationY="-50"
+                       FontSize="Large"
+                       HorizontalTextAlignment="Center"
+                       Text="GLASSES!"/>
+            </StackLayout>
             
         </Grid>
+
     </Grid>
 </ContentPage>
