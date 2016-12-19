@@ -145,6 +145,7 @@ namespace KChristmas2016
             await Panel5_NextButton.ScaleTo(1, 300, Easing.BounceIn);
         }
 
+        Animation buttonPulseAnimation = new Animation();
         private async void Panel5_NextButton_Clicked(object sender, EventArgs e)
         {
             _currentState = await ChangePanelState(Panel5, Panel6, _currentState);
@@ -152,8 +153,7 @@ namespace KChristmas2016
             await Panel6_Caption.FadeTo(1, 1000);
             await Task.Delay(1500);
             await Panel6_NextButton.FadeTo(1, 1000);
-
-            Animation buttonPulseAnimation = new Animation();
+            Panel6_NextButton.InputTransparent = false;                        
         }
 
         private static async Task<PanelState> ChangePanelState(Grid fromPanel, Grid toPanel, PanelState fromState)
@@ -175,6 +175,11 @@ namespace KChristmas2016
             );
 
             return fromState + 1;
-        }        
+        }
+
+        private void Panel6_NextButton_Clicked(object sender, EventArgs e)
+        {
+            Panel6_NextButton.AbortAnimation("Panel6PulseAnimation");
+        }
     }
 }

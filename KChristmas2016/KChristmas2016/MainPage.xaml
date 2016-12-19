@@ -41,6 +41,7 @@
                     BackgroundColor="Green"
                     Clicked="Panel1NextButton_Clicked"
                     HorizontalOptions="FillAndExpand" VerticalOptions="End"
+                    TextColor="White"
                     Text="YES!"/>
         </Grid>
         <!--Panel 1 End-->
@@ -64,10 +65,12 @@
                 </Grid.RowDefinitions>
                 <!--Screwy row layout here so that the gift_top overdraws the gift_base-->
                 <Button Grid.Row="1" 
+                        HorizontalOptions="CenterAndExpand"
                         Image="{ext:ImageExtension gift_base_small.png}"
                         Clicked="Panel2Gift_Clicked"/>
                 <Image x:Name="Panel2_GiftTop" 
                        Grid.Row="0" 
+                       HorizontalOptions="CenterAndExpand"
                        Margin="0, 0, 0, -20"
                        Source="{ext:ImageExtension gift_top_small.png}"/>
                 <Label x:Name="Panel2_InstructionText"
@@ -90,6 +93,7 @@
                     HorizontalOptions="FillAndExpand" VerticalOptions="End"
                     InputTransparent="True"
                     Opacity="0"
+                    TextColor="White"
                     Text="OMGWTFBBQ YESSSS"/>
         </Grid>
         <!--Panel 2 End-->
@@ -140,6 +144,7 @@
                     BackgroundColor="Green"
                     HorizontalOptions="FillAndExpand"
                     VerticalOptions="End"
+                    TextColor="White"
                     Text="wat."/>
             <Button x:Name="Panel3_NextButton2"
                     Grid.Row="1"
@@ -149,6 +154,7 @@
                     IsVisible="False"
                     Opacity="0"
                     VerticalOptions="End"
+                    TextColor="White"
                     Text="O...kay..."/>
         </Grid>
         <!--End panel 3-->
@@ -216,6 +222,7 @@
                     InputTransparent="True"
                     Opacity="0"
                     VerticalOptions="End"
+                    TextColor="White"
                     Text="If you insist..."/>
         </Grid>
         <!--End Panel 4-->
@@ -276,7 +283,8 @@
             <StackLayout x:Name="Panel6Content" 
                          HorizontalOptions="CenterAndExpand"
                          VerticalOptions="CenterAndExpand">
-                <Image Source="{ext:ImageExtension reading_glasses_small.png}"/>
+                <Image HorizontalOptions="CenterAndExpand"
+                       Source="{ext:ImageExtension reading_glasses_small.png}"/>
                 <Label x:Name="Panel6_Caption"
                        HorizontalTextAlignment="Center"
                        Opacity="0"
@@ -286,13 +294,14 @@
 
             <Button x:Name="Panel6_NextButton"
                     Grid.Row="1"
+                    Clicked="Panel6_NextButton_Clicked"
                     BackgroundColor="Green"
                     TextColor="White"
                     Opacity="0"
                     HorizontalOptions="FillAndExpand"
                     VerticalOptions="End"
                     InputTransparent="True"
-                    Text="I'M READY"/>
+                    Text="I'M READY"/> 
 
         </Grid>
 
