@@ -1,5 +1,4 @@
-﻿using Android.App;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -28,8 +27,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: ComVisible(false)]
-#if DEBUG
-[assembly: Application(Debuggable = true)]
-#else
-[assembly: Application(Debuggable=false)]
-#endif
