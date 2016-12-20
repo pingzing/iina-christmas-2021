@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ext="clr-namespace:KChristmas2016.XamlExtensions"
+             x:Class="KChristmas2016.RedemptionPage"
+             Appearing="ContentPage_Appearing"
+             Title="Accept your gift">
+
+    <Grid x:Name="ContentRoot" Padding="10" BackgroundColor="Transparent">
+        <Grid x:Name="AcceptGiftPanel">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackLayout HorizontalOptions="CenterAndExpand"
+                         VerticalOptions="CenterAndExpand">
+                <Image HorizontalOptions="CenterAndExpand"
+                       Source="{ext:ImageExtension gift_small.png}"/>
+                <Label x:Name="AcceptGiftPanelCaption"
+                       HorizontalTextAlignment="Center"
+                       Text="Accepting gift..."/>
+
+            </StackLayout>
+
+            <Button x:Name="AcceptButton"
+                    Grid.Row="1"
+                    Clicked="AcceptButton_Clicked"
+                    BackgroundColor="Green"                
+                    HorizontalOptions="FillAndExpand"
+                    IsVisible="False"
+                    VerticalOptions="End"
+                    TextColor="White"
+                    Text="Accept"/>
+        </Grid>
+
+        <Grid x:Name="RedeemGiftPanel"
+              IsVisible="False">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackLayout HorizontalOptions="CenterAndExpand"
+                         VerticalOptions="CenterAndExpand">
+                <Image HorizontalOptions="CenterAndExpand"
+                       Source="{ext:ImageExtension gift_small.png}"/>
+                <Label x:Name="RedeemGiftPanelCaption"
+                       HorizontalTextAlignment="Center"
+                       Text="You've accepted the gift! Hooray! You can redeem it at any time by just tapping the button below. Neil will be emailed immediately!"/>
+
+            </StackLayout>
+
+            <Button x:Name="RedeemButton"
+                    Grid.Row="1"
+                    Clicked="RedeemButton_Clicked"
+                    BackgroundColor="Green"                
+                    HorizontalOptions="FillAndExpand"                    
+                    VerticalOptions="End"
+                    TextColor="White"
+                    Text="Redeem"/>
+        </Grid>
+
+        <Grid x:Name="CompletePanel"
+              IsVisible="False">
+            <StackLayout HorizontalOptions="CenterAndExpand"
+                         VerticalOptions="CenterAndExpand">
+                <Image HorizontalOptions="CenterAndExpand"
+                       Source="{ext:ImageExtension reading_glasses_small.png}"/>
+                <Label x:Name="CompletePanelCaption"
+                       HorizontalTextAlignment="Center"
+                       Text="Gift redeemed! Neil should be getting an email any moment now &lt;3"/>
+            </StackLayout>
+        </Grid>
+        
+    </Grid>
+</ContentPage>

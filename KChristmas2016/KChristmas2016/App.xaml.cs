@@ -11,11 +11,14 @@ namespace KChristmas2016
 {
     public partial class App : Application
     {
+        public NavigationPage Navigation = new NavigationPage();
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new KChristmas2016.MainPage();
+            MainPage = Navigation;
+            Navigation.PushAsync(new KChristmas2016.MainPage());
         }
 
         protected override void OnStart()

@@ -4,21 +4,40 @@
              xmlns:local="clr-namespace:KChristmas2016"
              xmlns:ext="clr-namespace:KChristmas2016.XamlExtensions"
              x:Class="KChristmas2016.MainPage"
-             Appearing="ContentPage_Appearing">
+             Appearing="ContentPage_Appearing"
+             Title="Merry Christmas">
 
     <Grid x:Name="ContentRoot" Padding="10" BackgroundColor="Transparent">
 
         <Grid x:Name="TooEarlyPanel"
               IsVisible="False">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
             <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
                 <Image HorizontalOptions="CenterAndExpand"
                        Source="{ext:ImageExtension gift_small.png}"/>
-                <Label HorizontalTextAlignment="Center" 
+                <Label x:Name="TimerLabel" 
+                       HorizontalTextAlignment="Center"/>
+                <Label x:Name="TooEarlyLabel1" 
+                       HorizontalTextAlignment="Center" 
                        Text="Hey, not yet!"
                        Style="{DynamicResource SubtitleStyle}"/>
-                <Label HorizontalTextAlignment="Center" 
+                <Label x:Name="TooEarlyLabel2" 
+                       HorizontalTextAlignment="Center" 
                        Text="It's not Christmas yet! You're going to have to wait! Come back on the 24th!"/>
             </StackLayout>
+            <Button x:Name="TooEaryPanelNextButton"
+                    Grid.Row="1"
+                    BackgroundColor="Green"
+                    Clicked="TooEaryPanelNextButton_Clicked"                    
+                    Opacity="0"
+                    InputTransparent="True"
+                    HorizontalOptions="FillAndExpand" VerticalOptions="End"
+                    TextColor="White"
+                    Text="Timer's up! Let's go!"/>
         </Grid>
 
         <!--Panel 1 Start-->
@@ -32,6 +51,8 @@
             <StackLayout x:Name="Panel1Content"
                          HorizontalOptions="CenterAndExpand" 
                          VerticalOptions="CenterAndExpand">
+                <Image HorizontalOptions="CenterAndExpand"
+                       Source="{ext:ImageExtension gift_small.png}"/>
                 <Label HorizontalTextAlignment="Center" 
                        Text="It's finally time! Are you ready to see what you're getting for Christmas?"/>
             </StackLayout>

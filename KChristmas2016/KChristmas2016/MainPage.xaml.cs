@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KChristmas2016.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace KChristmas2016
     public partial class MainPage : ContentPage
     {
         private readonly bool IsInDebug = false;
+        private readonly DateTime ChristmasDate = new DateTime(2016, 12, 24);
 
         private enum PanelState
         {
@@ -35,13 +37,42 @@ namespace KChristmas2016
 
         private async void ContentPage_Appearing(object sender, EventArgs e)
         {
-            if (DateTime.Now <= new DateTime(2016, 12, 24) && !IsInDebug)
+            if(Settings.IntroComplete)
+            {
+                await ((App)(Application.Current)).Navigation.PushAsync(new RedemptionPage());
+                ((App)App.Current).Navigation.Navigation.RemovePage(this);
+                return;
+            }
+            else if (DateTime.Now < ChristmasDate && !IsInDebug)
             {
                 await Task.Delay(1000);
                 TooEarlyPanel.Opacity = 0;
                 TooEarlyPanel.IsVisible = true;
                 await TooEarlyPanel.FadeTo(1, 500);
                 _currentState = PanelState.None;
+
+                Xamarin.Forms.Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                {
+                    var timeTillChristmas = ChristmasDate - DateTime.Now;
+                    if(timeTillChristmas > TimeSpan.Zero)
+                    {
+                        TimerLabel.Text = $"{timeTillChristmas.Days}d {timeTillChristmas.Hours}h {timeTillChristmas.Minutes}m {timeTillChristmas.Seconds}s";
+                        return true;
+                    }
+                    else
+                    {
+                        TimerLabel.Text = "0d 0h 0m 0s";
+                        TooEaryPanelNextButton.InputTransparent = false;
+                        Task.Run(async () => Task.WhenAll(
+                            TooEarlyLabel1.FadeTo(0, 2000),
+                            TooEarlyLabel2.FadeTo(0, 2000),
+                            TimerLabel.TranslateTo(0, 50, 4000),
+                            TimerLabel.ScaleTo(2, 4000),
+                            TooEaryPanelNextButton.FadeTo(1, 4000)
+                        ));
+                        return false;
+                    }
+                });
             }
             else
             {
@@ -51,6 +82,11 @@ namespace KChristmas2016
                 await Panel1.FadeTo(1, 500);
                 _currentState = PanelState.Panel1;
             }
+        }
+
+        private async void TooEaryPanelNextButton_Clicked(object sender, EventArgs e)
+        {
+            _currentState = await ChangePanelState(TooEarlyPanel, Panel1, _currentState);
         }
 
         private async void Panel1NextButton_Clicked(object sender, EventArgs e)
@@ -145,7 +181,7 @@ namespace KChristmas2016
             await Panel5_NextButton.ScaleTo(1, 300, Easing.BounceIn);
         }
 
-        Animation buttonPulseAnimation = new Animation();
+        bool pulseButton = true;
         private async void Panel5_NextButton_Clicked(object sender, EventArgs e)
         {
             _currentState = await ChangePanelState(Panel5, Panel6, _currentState);
@@ -153,7 +189,26 @@ namespace KChristmas2016
             await Panel6_Caption.FadeTo(1, 1000);
             await Task.Delay(1500);
             await Panel6_NextButton.FadeTo(1, 1000);
-            Panel6_NextButton.InputTransparent = false;                        
+            Panel6_NextButton.InputTransparent = false;
+
+            while (pulseButton)
+            {
+                await Panel6_NextButton.ScaleTo(1.3, 500);
+                if(!pulseButton)
+                {
+                    break;
+                }
+                await Panel6_NextButton.ScaleTo(1, 500);
+            }                        
+        }
+
+
+        private void Panel6_NextButton_Clicked(object sender, EventArgs e)
+        {
+            pulseButton = false;
+            ((App)App.Current).Navigation.PushAsync(new RedemptionPage());
+            ((App)App.Current).Navigation.Navigation.RemovePage(this);
+            Settings.IntroComplete = true;                                    
         }
 
         private static async Task<PanelState> ChangePanelState(Grid fromPanel, Grid toPanel, PanelState fromState)
@@ -175,11 +230,6 @@ namespace KChristmas2016
             );
 
             return fromState + 1;
-        }
-
-        private void Panel6_NextButton_Clicked(object sender, EventArgs e)
-        {
-            Panel6_NextButton.AbortAnimation("Panel6PulseAnimation");
         }
     }
 }
