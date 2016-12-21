@@ -17,7 +17,10 @@
             </Grid.RowDefinitions>
 
             <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                <Button x:Name="TooEarlyPresentButton"  
+                <Button x:Name="TooEarlyPresentButton"
+                        BackgroundColor="Transparent"
+                        BorderColor="Transparent"
+                        BorderWidth="0"
                         HorizontalOptions="CenterAndExpand"
                         Image="{ext:ImageExtension gift_small.png}"
                         Clicked="TooEarlyPresentButton_Clicked"/>

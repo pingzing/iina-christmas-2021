@@ -3565,6 +3565,9 @@ namespace KChristmas2016.Droid
 			// aapt resource value: 0x7f0a0175
 			public const int MyButton = 2131362165;
 			
+			// aapt resource value: 0x7f0a0176
+			public const int NoShadowButton = 2131362166;
+			
 			// aapt resource value: 0x7f0a0032
 			public const int Platform_AppCompat = 2131361842;
 			
