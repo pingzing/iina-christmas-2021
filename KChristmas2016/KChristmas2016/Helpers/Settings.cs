@@ -28,6 +28,9 @@ namespace KChristmas2016.Helpers
         private const string GiftRedeemedKey = "GiftRedeemedKey";
         private static readonly bool GiftRedeemedDefault = false;
 
+        private const string GiftHintsKey = "GiftHintsKeys";
+        private static readonly string GiftHintsDefault = null;
+
         #endregion
 
 
@@ -47,6 +50,12 @@ namespace KChristmas2016.Helpers
         {
             get { return AppSettings.GetValueOrDefault<bool>(IntroCompleteKey, IntroCompleteDefault); }
             set { AppSettings.AddOrUpdateValue<bool>(IntroCompleteKey, value); }
+        }
+
+        public static string GiftHints
+        {
+            get { return AppSettings.GetValueOrDefault<string>(GiftHintsKey, GiftHintsDefault); }
+            set { AppSettings.AddOrUpdateValue<string>(GiftHintsKey, value); }
         }
 
     }

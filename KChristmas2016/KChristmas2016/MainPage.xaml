@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:KChristmas2016"
              xmlns:ext="clr-namespace:KChristmas2016.XamlExtensions"
              x:Class="KChristmas2016.MainPage"
-             Appearing="ContentPage_Appearing"
+             Appearing="ContentPage_Appearing"             
              Title="Merry Christmas">
 
     <Grid x:Name="ContentRoot" Padding="10" BackgroundColor="Transparent">
@@ -15,10 +15,12 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            
+
             <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                <Image HorizontalOptions="CenterAndExpand"
-                       Source="{ext:ImageExtension gift_small.png}"/>
+                <Button x:Name="TooEarlyPresentButton"  
+                        HorizontalOptions="CenterAndExpand"
+                        Image="{ext:ImageExtension gift_small.png}"
+                        Clicked="TooEarlyPresentButton_Clicked"/>
                 <Label x:Name="TimerLabel" 
                        HorizontalTextAlignment="Center"/>
                 <Label x:Name="TooEarlyLabel1" 
@@ -29,6 +31,14 @@
                        HorizontalTextAlignment="Center" 
                        Text="It's not Christmas yet! You're going to have to wait! Come back on the 24th!"/>
             </StackLayout>
+            <Label x:Name="HintCaption" 
+                   Grid.Row="0"
+                   FontSize="Large"
+                   VerticalOptions="Center"
+                   TranslationY="-130"
+                   HorizontalTextAlignment="Center"
+                   Opacity="0"/>
+            
             <Button x:Name="TooEaryPanelNextButton"
                     Grid.Row="1"
                     BackgroundColor="Green"

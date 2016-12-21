@@ -1,7 +1,9 @@
 ﻿using KChristmas2016.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -12,6 +14,12 @@ namespace KChristmas2016
     {
         private readonly bool IsInDebug = false;
         private readonly DateTime ChristmasDate = new DateTime(2016, 12, 24);
+        private readonly HttpClient _httpClient = new HttpClient();
+        private const string GetGiftHintsUrl = "https://kc2016.azurewebsites.net/api/GetGiftHints?code=7c5RrOfucfopvE0g1woo10kMHU/pz4v5MHd8Njo0m00s8TuN1PvAfA==";
+
+        private List<string> _giftHints = new List<string>();
+        private List<string> _seenHints = new List<string>();
+        private Random rand = new Random();
 
         private enum PanelState
         {
@@ -30,9 +38,41 @@ namespace KChristmas2016
         public MainPage()
         {
 #if DEBUG
-            IsInDebug = true;
+            IsInDebug = false;
 #endif
             InitializeComponent();
+            InitHints(Settings.GiftHints);
+        }
+
+        private void InitHints(string unbrokenHintString)
+        {
+            if (Settings.GiftHints != null)
+            {
+                _giftHints = unbrokenHintString.Split('|').ToList();
+            }
+        }
+
+        private string GetHint()
+        {
+            string hindsd =_giftHints.Count > 0 ? _giftHints[rand.Next() % _giftHints.Count] : "No hints here. Sorry!";
+            if(_giftHints.Count <= 0 && _seenHints.Count > 0)
+            {
+                Debug.WriteLine("SeenHints emptied, GiftHints refilled.");
+                _giftHints = new List<string>(_seenHints);
+                _seenHints.Clear();
+            }
+            if(_giftHints.Count > 0)
+            {
+                int hintIndex = rand.Next() % _giftHints.Count;
+                string hint = _giftHints[hintIndex];
+                _giftHints.RemoveAt(hintIndex);
+                _seenHints.Add(hint);
+                return hint;
+            }
+            else
+            {
+                return "No hints here. Sorry!";
+            }
         }
 
         private async void ContentPage_Appearing(object sender, EventArgs e)
@@ -45,12 +85,14 @@ namespace KChristmas2016
             }
             else if (DateTime.Now < ChristmasDate && !IsInDebug)
             {
+                //Set up panel state
                 await Task.Delay(1000);
                 TooEarlyPanel.Opacity = 0;
                 TooEarlyPanel.IsVisible = true;
                 await TooEarlyPanel.FadeTo(1, 500);
                 _currentState = PanelState.None;
 
+                //Set up countdown timer
                 Xamarin.Forms.Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     var timeTillChristmas = ChristmasDate - DateTime.Now;
@@ -63,16 +105,28 @@ namespace KChristmas2016
                     {
                         TimerLabel.Text = "0d 0h 0m 0s";
                         TooEaryPanelNextButton.InputTransparent = false;
-                        Task.Run(async () => Task.WhenAll(
+                        Task.WhenAll(
                             TooEarlyLabel1.FadeTo(0, 2000),
                             TooEarlyLabel2.FadeTo(0, 2000),
                             TimerLabel.TranslateTo(0, 50, 4000),
                             TimerLabel.ScaleTo(2, 4000),
                             TooEaryPanelNextButton.FadeTo(1, 4000)
-                        ));
+                        );
                         return false;
                     }
                 });
+
+                //Set up gift box hints
+                try
+                {
+                    string response = await _httpClient.GetStringAsync(GetGiftHintsUrl);
+                    Settings.GiftHints = response.Trim('"');
+                    InitHints(Settings.GiftHints);
+                }
+                catch(Exception ex)
+                {
+                    Debug.WriteLine("Failed to get gift hints list.");
+                }
             }
             else
             {
@@ -83,6 +137,43 @@ namespace KChristmas2016
                 _currentState = PanelState.Panel1;
             }
         }
+
+        bool showingHint = false;
+        private async void TooEarlyPresentButton_Clicked(object sender, EventArgs e)
+        {
+            if(showingHint)
+            {
+                return;
+            }
+            showingHint = true;
+
+            var storyboard = new Animation();
+            var shakeUpHigh = new Animation(v => TooEarlyPresentButton.TranslationY = v, 0, 20, Easing.SpringIn);
+            var fromHighToLow = new Animation(v => TooEarlyPresentButton.TranslationY = v, 20, -20, Easing.SpringIn);
+            var fromLowToSmallHigh = new Animation(v => TooEarlyPresentButton.TranslationY = v, -20, 10, Easing.SpringIn);
+            var fromSmallHighToSmallLow = new Animation(v => TooEarlyPresentButton.TranslationY = v, 10, -10, Easing.SpringIn);
+            var fromSmallLowToTinyHigh = new Animation(v => TooEarlyPresentButton.TranslationY = v, -10, 5, Easing.SpringIn);
+            var fromTinyHighToTinyLow = new Animation(v => TooEarlyPresentButton.TranslationY = v, 5, -5, Easing.SpringIn);
+            var fromTinyLowToComplete = new Animation(v => TooEarlyPresentButton.TranslationY = v, -5, 0, Easing.SpringOut);
+            storyboard.Add(0.0, 0.1, shakeUpHigh);
+            storyboard.Add(0.1, 0.2, fromHighToLow);
+            storyboard.Add(0.2, 0.3, fromLowToSmallHigh);
+            storyboard.Add(0.3, 0.4, fromSmallHighToSmallLow);
+            storyboard.Add(0.4, 0.5, fromSmallLowToTinyHigh);
+            storyboard.Add(0.5, 0.6, fromTinyHighToTinyLow);
+            storyboard.Add(0.6, 1.0, fromTinyLowToComplete);
+
+            storyboard.Commit(TooEarlyPresentButton, "ShakeAnimation", 16, 1000);
+            HintCaption.Text = GetHint();
+            await HintCaption.FadeTo(1, 100);
+            await Task.WhenAll(                
+                HintCaption.FadeTo(0, 5000),
+                HintCaption.TranslateTo(0, -230, 5000)
+            );
+            HintCaption.TranslationY = -130;
+
+            showingHint = false;
+        }        
 
         private async void TooEaryPanelNextButton_Clicked(object sender, EventArgs e)
         {
@@ -208,7 +299,8 @@ namespace KChristmas2016
             pulseButton = false;
             ((App)App.Current).Navigation.PushAsync(new RedemptionPage());
             ((App)App.Current).Navigation.Navigation.RemovePage(this);
-            Settings.IntroComplete = true;                                    
+            Settings.IntroComplete = true;
+            _httpClient.Dispose();             
         }
 
         private static async Task<PanelState> ChangePanelState(Grid fromPanel, Grid toPanel, PanelState fromState)
