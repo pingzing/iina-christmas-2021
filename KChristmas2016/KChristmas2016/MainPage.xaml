@@ -168,7 +168,7 @@
                        Grid.Row="2"
                        HorizontalTextAlignment="Center"
                        Opacity="0"
-                       Text="That uh, wasn't supposed to happen. Maybe if you just...press the button again?"/>
+                       Text="It's all blurry! Maybe if you just...press the button again?"/>
 
             </Grid>
 
@@ -234,7 +234,7 @@
                        Grid.Row="3"
                        HorizontalTextAlignment="Center"
                        Opacity="0"
-                       Text="It's still broken!"/>
+                       Text="It's still out of focus!"/>
                 <Label x:Name="Panel4_Caption3Line1"
                        Grid.Row="1"
                        Opacity="0"
