@@ -1,5 +1,6 @@
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
+using System;
 
 namespace KChristmas2016.Helpers
 {
@@ -31,6 +32,9 @@ namespace KChristmas2016.Helpers
         private const string GiftHintsKey = "GiftHintsKeys";
         private static readonly string GiftHintsDefault = null;
 
+        private const string LastSeenVersionKey = "LastSeenVersion";
+        private static readonly Version LastSeenVersionDefault = new Version(1, 0, 0);
+
         #endregion
 
 
@@ -40,9 +44,10 @@ namespace KChristmas2016.Helpers
             set { AppSettings.AddOrUpdateValue<bool>(GiftAcceptedKey, value); }
         }
 
+        [Obsolete("No longer used! Just using GiftAccepted now.")]
         public static bool GiftRedeemed
         {
-            get { return AppSettings.GetValueOrDefault<bool>(GiftRedeemedKey, GiftRedeemedDefault); }
+            get { return false; }
             set { AppSettings.AddOrUpdateValue<bool>(GiftRedeemedKey, value); }
         }
 
@@ -56,6 +61,27 @@ namespace KChristmas2016.Helpers
         {
             get { return AppSettings.GetValueOrDefault<string>(GiftHintsKey, GiftHintsDefault); }
             set { AppSettings.AddOrUpdateValue<string>(GiftHintsKey, value); }
+        }
+
+        public static Version LastSeenVersion
+        {
+            get
+            {
+                string lastSeenVersion = AppSettings.GetValueOrDefault(LastSeenVersionKey, (string)null);
+                if (lastSeenVersion == null)
+                {
+                    return LastSeenVersionDefault;
+                }
+                else
+                {
+                    return new Version(lastSeenVersion);
+                }
+            }
+            set
+            {
+                string versionAsString = value.ToString(3);
+                AppSettings.AddOrUpdateValue<string>(LastSeenVersionKey, versionAsString);
+            }
         }
 
     }

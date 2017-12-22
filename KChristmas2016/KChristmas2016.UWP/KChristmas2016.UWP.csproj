@@ -155,6 +155,7 @@
     <Content Include="Assets\Images\reading_glasses_small_medium_blur.scale-240.png" />
     <Content Include="Assets\Images\reading_glasses_small_medium_blur.scale-250.png" />
     <Content Include="Assets\Images\reading_glasses_small_medium_blur.scale-300.png" />
+    <Content Include="Assets\Images\sad_kitty.jpg" />
     <Content Include="Assets\NewStoreLogo.scale-100.png" />
     <Content Include="Assets\NewStoreLogo.scale-125.png" />
     <Content Include="Assets\NewStoreLogo.scale-150.png" />

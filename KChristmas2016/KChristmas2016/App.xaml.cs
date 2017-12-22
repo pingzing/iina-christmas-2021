@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KChristmas2016.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,22 @@ namespace KChristmas2016
 {
     public partial class App : Application
     {
+        private static readonly Version CURRENT_VERSION = new Version(2, 0, 0);
+
         public NavigationPage Navigation = new NavigationPage();
 
         public App()
         {
             InitializeComponent();
+
+            if (Settings.LastSeenVersion < CURRENT_VERSION)
+            {
+                Settings.GiftAccepted = false;
+                Settings.GiftHints = null;
+                Settings.GiftRedeemed = false;
+                Settings.IntroComplete = false;
+            }
+            Settings.LastSeenVersion = CURRENT_VERSION;
 
             MainPage = Navigation;
             Navigation.PushAsync(new KChristmas2016.MainPage());

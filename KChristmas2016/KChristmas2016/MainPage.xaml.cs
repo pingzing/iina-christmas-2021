@@ -11,9 +11,9 @@ using Xamarin.Forms;
 namespace KChristmas2016
 {
     public partial class MainPage : ContentPage
-    {
-        private readonly bool IsInDebug = false;
-        private readonly DateTime ChristmasDate = new DateTime(2016, 12, 24);
+    {        
+        private readonly bool SkipCountdown = false;
+        private readonly DateTime ChristmasDate = new DateTime(2017, 12, 24, 17, 0, 0);
         private readonly HttpClient _httpClient = new HttpClient();
         private const string GetGiftHintsUrl = "https://kc2016.azurewebsites.net/api/GetGiftHints?code=7c5RrOfucfopvE0g1woo10kMHU/pz4v5MHd8Njo0m00s8TuN1PvAfA==";
 
@@ -25,11 +25,7 @@ namespace KChristmas2016
         {
             None,
             Panel1,
-            Panel2,
-            Panel3,
-            Panel4,
-            Panel5,
-            Panel6,
+            Panel2,            
             End
         }
 
@@ -37,10 +33,11 @@ namespace KChristmas2016
 
         public MainPage()
         {
-#if DEBUG
-            IsInDebug = false;
+#if !DEBUG
+            SkipCountdown = false;
 #endif
-            InitializeComponent();
+            InitializeComponent();            
+
             InitHints(Settings.GiftHints);
         }
 
@@ -83,7 +80,7 @@ namespace KChristmas2016
                 ((App)App.Current).Navigation.Navigation.RemovePage(this);
                 return;
             }
-            else if (DateTime.Now < ChristmasDate && !IsInDebug)
+            else if (DateTime.Now < ChristmasDate && !SkipCountdown)
             {
                 //Set up panel state
                 await Task.Delay(1000);
@@ -137,16 +134,9 @@ namespace KChristmas2016
                 _currentState = PanelState.Panel1;
             }
         }
-
-        bool showingHint = false;
+        
         private async void TooEarlyPresentButton_Clicked(object sender, EventArgs e)
-        {
-            if(showingHint)
-            {
-                return;
-            }
-            showingHint = true;
-
+        {            
             var storyboard = new Animation();
             var shakeUpHigh = new Animation(v => TooEarlyPresentButton.TranslationY = v, 0, 20, Easing.SpringIn);
             var fromHighToLow = new Animation(v => TooEarlyPresentButton.TranslationY = v, 20, -20, Easing.SpringIn);
@@ -164,15 +154,26 @@ namespace KChristmas2016
             storyboard.Add(0.6, 1.0, fromTinyLowToComplete);
 
             storyboard.Commit(TooEarlyPresentButton, "ShakeAnimation", 16, 1000);
-            HintCaption.Text = GetHint();
-            await HintCaption.FadeTo(1, 100);
-            await Task.WhenAll(                
-                HintCaption.FadeTo(0, 5000),
-                HintCaption.TranslateTo(0, -230, 5000)
-            );
-            HintCaption.TranslationY = -130;
 
-            showingHint = false;
+            Label floatingHintLabel = new Label
+            {
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
+                VerticalOptions = LayoutOptions.Center,
+                TranslationY = -130,
+                HorizontalTextAlignment = TextAlignment.Center,
+                Opacity = 0
+            };
+            Grid.SetRow(floatingHintLabel, 0);
+            TooEarlyPanel.Children.Add(floatingHintLabel);
+
+            floatingHintLabel.Text = GetHint();
+            await floatingHintLabel.FadeTo(1, 100);
+            await Task.WhenAll(
+                floatingHintLabel.FadeTo(0, 5000),
+                floatingHintLabel.TranslateTo(0, -230, 5000)
+            );
+
+            TooEarlyPanel.Children.Remove(floatingHintLabel);            
         }        
 
         private async void TooEaryPanelNextButton_Clicked(object sender, EventArgs e)
@@ -185,6 +186,7 @@ namespace KChristmas2016
             _currentState = await ChangePanelState(Panel1, Panel2, _currentState);
         }
 
+        bool _pulseButton = true;
         private async void Panel2Gift_Clicked(object sender, EventArgs e)
         {
             await Task.WhenAll(
@@ -193,114 +195,38 @@ namespace KChristmas2016
                 Panel2_InstructionText.FadeTo(0, 1000)
             );
 
+            //Disable multiple openings
+            Panel2Gift.InputTransparent = true;
+
             Panel2NextButton.Opacity = 0;
             Panel2NextButton.IsVisible = true;
             Panel2NextButton.InputTransparent = false;
             await Panel2_TeaserText.FadeTo(1, 800);
-            await Panel2NextButton.FadeTo(1, 300);            
+            await Panel2NextButton.FadeTo(1, 300);
+
+            while (_pulseButton)
+            {
+                await Panel2NextButton.ScaleTo(1.3, 500);
+                if (!_pulseButton)
+                {
+                    break;
+                }
+                await Panel2NextButton.ScaleTo(1, 500);
+            }
         }
 
         private async void Panel2NextButton_Clicked(object sender, EventArgs e)
         {
-            _currentState = await ChangePanelState(Panel2, Panel3, _currentState);
-            await Panel3_Caption1.ScaleTo(1.0, 300, Easing.BounceIn);
+            await NavigateToRedemptionPage();
         }
-
-        private async void Panel3_NextButton1_Clicked(object sender, EventArgs e)
+        
+        private async Task NavigateToRedemptionPage()
         {
-            await Panel3_Caption1.FadeTo(0, 100);
-            await Panel3_NextButton1.FadeTo(0, 100);
-            await Task.Delay(500);
-            await Panel3_Caption2Line1.FadeTo(1, 250);
-            await Task.Delay(1000);
-            await Panel3_Caption2Line2.FadeTo(1, 1000);
-            await Task.Delay(1000);
-            Panel3_NextButton1.IsVisible = false;
-            Panel3_NextButton2.IsVisible = true;            
-            await Panel3_NextButton2.FadeTo(1, 1000);
-        }
-
-        private async void Panel3_NextButton2_Clicked(object sender, EventArgs e)
-        {
-            _currentState = await ChangePanelState(Panel3, Panel4, _currentState);
-
-            await Panel4_Caption1.ScaleTo(1, 300, Easing.BounceIn);
-            await Task.Delay(2500);
-            Panel4_Caption1.Opacity = 0;
-            Panel4_Caption2Line1.Opacity = 1;
-            await Task.Delay(1000);
-            Panel4_Caption2Line2.Opacity = 1;
-            await Task.Delay(1000);
-            Panel4_Caption2Line3.Opacity = 1;
-
-            await Task.Delay(2000);
-
-            await Task.WhenAll(
-                Panel4_Caption2Line1.FadeTo(0, 500),
-                Panel4_Caption2Line2.FadeTo(0, 500),
-                Panel4_Caption2Line3.FadeTo(0, 500)
-            );
-
-            await Panel4_Caption3Line1.FadeTo(1, 1000);
-            await Task.Delay(500);
-            await Panel4_Caption3Line2.FadeTo(1, 1000);
-            await Panel4_NextButton.FadeTo(1, 1000);
-            Panel4_NextButton.InputTransparent = false;
-        }
-
-        private async void Panel4_NextButton_Clicked(object sender, EventArgs e)
-        {
-            _currentState = await ChangePanelState(Panel4, Panel5, _currentState);
-
-            await Panel5_Caption1.ScaleTo(1, 300, Easing.BounceIn);
-            await Task.Delay(2000);
-            await Task.WhenAll(
-                Panel5_Caption2.ScaleTo(1, 300, Easing.BounceIn),
-                Panel5_Caption2.TranslateTo(0, 0, 300, Easing.CubicIn)
-            );
-            await Task.Delay(500);
-            await Task.WhenAll(
-                Panel5_Caption3.ScaleTo(1, 300, Easing.BounceIn),
-                Panel5_Caption3.TranslateTo(0, 0, 300, Easing.CubicIn)
-            );
-            await Task.Delay(500);
-            await Task.WhenAll(
-                Panel5_Caption4.ScaleTo(1, 300, Easing.BounceIn),
-                Panel5_Caption4.TranslateTo(0, 0, 300, Easing.CubicIn)
-            );
-            await Task.Delay(500);
-            await Panel5_NextButton.ScaleTo(1, 300, Easing.BounceIn);
-        }
-
-        bool pulseButton = true;
-        private async void Panel5_NextButton_Clicked(object sender, EventArgs e)
-        {
-            _currentState = await ChangePanelState(Panel5, Panel6, _currentState);
-            await Task.Delay(1000);
-            await Panel6_Caption.FadeTo(1, 1000);
-            await Task.Delay(1500);
-            await Panel6_NextButton.FadeTo(1, 1000);
-            Panel6_NextButton.InputTransparent = false;
-
-            while (pulseButton)
-            {
-                await Panel6_NextButton.ScaleTo(1.3, 500);
-                if(!pulseButton)
-                {
-                    break;
-                }
-                await Panel6_NextButton.ScaleTo(1, 500);
-            }                        
-        }
-
-
-        private void Panel6_NextButton_Clicked(object sender, EventArgs e)
-        {
-            pulseButton = false;
-            ((App)App.Current).Navigation.PushAsync(new RedemptionPage());
+            _pulseButton = false;
+            await ((App)App.Current).Navigation.PushAsync(new RedemptionPage());
             ((App)App.Current).Navigation.Navigation.RemovePage(this);
             Settings.IntroComplete = true;
-            _httpClient.Dispose();             
+            _httpClient.Dispose();
         }
 
         private static async Task<PanelState> ChangePanelState(Grid fromPanel, Grid toPanel, PanelState fromState)
