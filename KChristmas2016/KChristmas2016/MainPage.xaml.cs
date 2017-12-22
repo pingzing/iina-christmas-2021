@@ -13,7 +13,7 @@ namespace KChristmas2016
     public partial class MainPage : ContentPage
     {        
         private readonly bool SkipCountdown = false;
-        private readonly DateTime ChristmasDate = new DateTime(2017, 12, 24, 17, 0, 0);
+        private readonly DateTime ChristmasDate = new DateTime(2017, 12, 24, 16, 0, 0);
         private readonly HttpClient _httpClient = new HttpClient();
         private const string GetGiftHintsUrl = "https://kc2016.azurewebsites.net/api/GetGiftHints?code=7c5RrOfucfopvE0g1woo10kMHU/pz4v5MHd8Njo0m00s8TuN1PvAfA==";
 
@@ -50,8 +50,7 @@ namespace KChristmas2016
         }
 
         private string GetHint()
-        {
-            string hindsd =_giftHints.Count > 0 ? _giftHints[rand.Next() % _giftHints.Count] : "No hints here. Sorry!";
+        {            
             if(_giftHints.Count <= 0 && _seenHints.Count > 0)
             {
                 Debug.WriteLine("SeenHints emptied, GiftHints refilled.");
@@ -117,6 +116,10 @@ namespace KChristmas2016
                 try
                 {
                     string response = await _httpClient.GetStringAsync(GetGiftHintsUrl);
+                    if(String.IsNullOrWhiteSpace(response))
+                    {
+                        return;
+                    }
                     Settings.GiftHints = response.Trim('"');
                     InitHints(Settings.GiftHints);
                 }

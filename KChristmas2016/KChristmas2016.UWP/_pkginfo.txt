@@ -1,1 +1,1 @@
-C:\Users\Public\Source Code\KChristmas2016\KChristmas2016\KChristmas2016.UWP\AppPackages\KChristmas2016.UWP_1.1.5.0\KChristmas2016.UWP_1.1.5.0_x86_x64_arm.appxbundle
+C:\Users\mcali\Desktop\Repositories\k-christmas-2016\KChristmas2016\KChristmas2016.UWP\AppPackages\KChristmas2016.UWP_1.3.7.0\KChristmas2016.UWP_1.3.7.0_x86_x64_arm.appxbundle
