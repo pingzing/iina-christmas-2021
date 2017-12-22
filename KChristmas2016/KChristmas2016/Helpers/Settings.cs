@@ -68,7 +68,7 @@ namespace KChristmas2016.Helpers
             get
             {
                 string lastSeenVersion = AppSettings.GetValueOrDefault(LastSeenVersionKey, (string)null);
-                if (lastSeenVersion == null)
+                if (String.IsNullOrWhiteSpace(lastSeenVersion))
                 {
                     return LastSeenVersionDefault;
                 }
