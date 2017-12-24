@@ -13,7 +13,7 @@ namespace KChristmas2016
     public partial class MainPage : ContentPage
     {        
         private readonly bool SkipCountdown = false;
-        private readonly DateTime ChristmasDate = new DateTime(2017, 12, 24, 16, 0, 0);
+        private readonly DateTime ChristmasDate = new DateTime(2017, 12, 24, 18, 0, 0);
         private readonly HttpClient _httpClient = new HttpClient();
         private const string GetGiftHintsUrl = "https://kc2016.azurewebsites.net/api/GetGiftHints?code=7c5RrOfucfopvE0g1woo10kMHU/pz4v5MHd8Njo0m00s8TuN1PvAfA==";
 
@@ -38,6 +38,7 @@ namespace KChristmas2016
 #endif
             InitializeComponent();            
 
+            //Init with locally-cached hints
             InitHints(Settings.GiftHints);
         }
 
@@ -120,6 +121,8 @@ namespace KChristmas2016
                     {
                         return;
                     }
+
+                    // Update local cache
                     Settings.GiftHints = response.Trim('"');
                     InitHints(Settings.GiftHints);
                 }
