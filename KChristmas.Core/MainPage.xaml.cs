@@ -1,4 +1,5 @@
 ﻿using KChristmas.Core.Helpers;
+using KChristmas.Core.XamlExtensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,8 +12,9 @@ using Xamarin.Forms;
 namespace KChristmas.Core
 {
     public partial class MainPage : ContentPage
-    {        
-        private readonly bool SkipCountdown = true;
+    {
+        private const uint StartingSpecialEventCooldown = 50;
+        private readonly bool SkipCountdown = false;
         private readonly DateTime ChristmasDate = new DateTime(2018, 12, 24, 18, 0, 0);
         private readonly HttpClient _httpClient = new HttpClient();
         private const string GetGiftHintsUrl = "https://kc2016.azurewebsites.net/api/GetGiftHints?code=7c5RrOfucfopvE0g1woo10kMHU/pz4v5MHd8Njo0m00s8TuN1PvAfA==";
@@ -20,6 +22,7 @@ namespace KChristmas.Core
         private List<string> _giftHints = new List<string>();
         private List<string> _seenHints = new List<string>();
         private Random rand = new Random();
+        private uint CurrentSpecialEventCooldown = 15;
 
         public MainPage()
         {
@@ -29,7 +32,7 @@ namespace KChristmas.Core
             InitializeComponent();            
 
             //Init with locally-cached hints
-            InitHints(Settings.GiftHints);
+            InitHints(Settings.GiftHints);            
         }
 
         private void InitHints(string unbrokenHintString)
@@ -68,7 +71,7 @@ namespace KChristmas.Core
             await Task.Delay(1000);
             TooEarlyPanel.Opacity = 0;
             TooEarlyPanel.IsVisible = true;
-            await TooEarlyPanel.FadeTo(1, 500);
+            await TooEarlyPanel.FadeTo(1, 500);           
 
             //Set up gift box hints
             try
@@ -103,6 +106,7 @@ namespace KChristmas.Core
                     {
                         TimerLabel.Text = "0d 0h 0m 0s";
                         NextButton.IsVisible = true;
+                        NextButton.InputTransparent = false;
                         Task.WhenAll(                            
                             TooEarlyLabel1.FadeTo(0, 2000),
                             TooEarlyLabel2.FadeTo(0, 2000),
@@ -117,7 +121,7 @@ namespace KChristmas.Core
             else
             {
                 NextButton.Opacity = 1;
-                NextButton.IsVisible = true;
+                NextButton.InputTransparent = false;
             }
         }
         
@@ -141,26 +145,151 @@ namespace KChristmas.Core
 
             storyboard.Commit(GiftBase, "ShakeAnimation", 16, 1000);
 
-            Label floatingHintLabel = new Label
+            if (CurrentSpecialEventCooldown == 0 && rand.Next() % 15 == 0)
             {
+                await RandomSpecialEvent();
+                CurrentSpecialEventCooldown = StartingSpecialEventCooldown;
+            }
+            else
+            {
+                await ShowFloatingText(GetHint());
+                if (CurrentSpecialEventCooldown > 0)
+                {
+                    CurrentSpecialEventCooldown -= 1;
+                }
+            }                                    
+        }
+
+        private async Task RandomSpecialEvent()
+        {
+            // For now, we only have one. In the future, we can do some randomness here.
+            Rectangle baseRect = GiftBase.Bounds;
+            double xMid = baseRect.X + baseRect.Width / 2;
+            double pinkieHeight = 94;
+            double pinkieWidth = 94;
+
+            Image pinkieImage = new Image
+            {
+                HeightRequest = 94,
+                WidthRequest = 94,
+                Source = ImageExtension.GetPlatformIndependentPath("pinkie_woundup_1.png")
+            };
+            double pinkieMid = pinkieImage.WidthRequest / 2;
+            pinkieImage.Rotation = 270;
+
+            AbsoluteLayout.SetLayoutBounds(pinkieImage, new Rectangle(xMid - pinkieMid, baseRect.Y - 40, pinkieWidth, pinkieHeight));
+            SpecialEventCanvas.Children.Add(pinkieImage);
+
+            double totalMillis = 3000.0;
+            double tick = 25.0 / totalMillis;
+            var boxShudderSlamOpen = new Animation
+            {
+                { 0.0, tick * 1, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 0, 10) },
+                { tick * 1, tick * 2, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 2, tick * 3, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 3, tick * 4, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
+                { tick * 4, tick * 5, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
+                { tick * 5, tick * 6, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
+                { tick * 6, tick * 7, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
+
+                { tick * 7, tick * 8, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 8, tick * 9, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 9, tick * 10, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
+                { tick * 10, tick * 11, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
+                { tick * 11, tick * 12, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
+                { tick * 12, tick * 13, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
+
+                { tick * 13, tick * 14, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 14, tick * 15, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 15, tick * 16, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
+                { tick * 16, tick * 17, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
+                { tick * 17, tick * 18, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
+                { tick * 18, tick * 19, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
+
+                { tick * 19, tick * 20, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 20, tick * 21, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 21, tick * 22, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
+                { tick * 22, tick * 23, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
+                { tick * 23, tick * 24, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
+                { tick * 24, tick * 25, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
+
+                { tick * 25, tick * 26, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 26, tick * 27, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
+                { tick * 27, tick * 28, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
+                { tick * 28, tick * 29, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
+                { tick * 29, tick * 30, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
+                { tick * 30, tick * 31, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
+
+                { 0.95, 0.97, new Animation(v => {pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_woundup_2.png"); }, 0, 0) },
+                { 0.95, 0.98, new Animation(v => {GiftBase.TranslationY = v; }, 0, -30, Easing.SpringOut) },
+                { 0.97, 1.0, new Animation(v => {pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_woundup_3.png"); }, 0, 0) },
+                { 0.98, 1.0, new Animation(v => {GiftBase.TranslationY = v; }, -30, 0, Easing.SpringOut) },
+                { 0.95, 1.0, new Animation(v => { GiftTop.TranslationY = v; }, 0, -300, Easing.CubicOut) }
+            };
+
+            boxShudderSlamOpen.Commit(GiftBase, "BoxShduder", 16, (uint)totalMillis);
+            await Task.Delay((int)totalMillis);
+
+            await Task.Delay(750);
+            pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_woundup_2.png");
+            await Task.Delay(750);
+            await pinkieImage.TranslateTo(0, 20, 1500);
+
+            pinkieImage.Rotation = 0;
+            pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_bounce_up_3.png");
+            await pinkieImage.TranslateTo(0, -20, 300, Easing.SpringOut);
+
+            ShowFloatingText("Hi!", Color.HotPink);
+            await Task.Delay(2000);
+
+            pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_confused.png");
+            ShowFloatingText("Hey, wait a minute...", Color.HotPink);
+            await Task.Delay(4000);
+
+            ShowFloatingText("...this isn't the Hearth's Warming Eve party!", Color.HotPink);
+            await Task.Delay(4000);
+
+            pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_bounce_up_3.png");
+            ShowFloatingText("Ohmigosh, I gotta get going!", Color.HotPink);
+            await Task.Delay(4000);
+
+            ShowFloatingText("I hope you're having lots and lots of fun though!", Color.HotPink);
+            await Task.Delay(4000);
+
+            await ShowFloatingText("Byeeeee!", Color.HotPink);
+            await pinkieImage.TranslateTo(0, 40, 300, Easing.SpringIn);
+            pinkieImage = null;
+            SpecialEventCanvas.Children.Clear();
+            await GiftTop.TranslateTo(0, 0, 300, Easing.SpringIn);
+        }
+
+        private async Task ShowFloatingText(string text, Color? textColor = null)
+        {
+            Label floatingHintLabel = new Label
+            {                
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 VerticalOptions = LayoutOptions.Center,
                 TranslationY = -130,
                 HorizontalTextAlignment = TextAlignment.Center,
                 Opacity = 0
             };
+            if (textColor != null)
+            {
+                floatingHintLabel.TextColor = textColor.Value;
+            }
+
             Grid.SetRow(floatingHintLabel, 0);
             TooEarlyPanel.Children.Add(floatingHintLabel);
 
-            floatingHintLabel.Text = GetHint();
+            floatingHintLabel.Text = text;
             await floatingHintLabel.FadeTo(1, 100);
             await Task.WhenAll(
                 floatingHintLabel.FadeTo(0, 5000),
                 floatingHintLabel.TranslateTo(0, -230, 5000)
             );
 
-            TooEarlyPanel.Children.Remove(floatingHintLabel);            
-        }               
+            TooEarlyPanel.Children.Remove(floatingHintLabel);
+        }
 
         private async void NextButton_Clicked(object sender, EventArgs e)
         {

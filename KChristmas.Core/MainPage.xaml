@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:KChristmas.Core"
              xmlns:ext="clr-namespace:KChristmas.Core.XamlExtensions"
@@ -23,6 +22,11 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+
+                <AbsoluteLayout x:Name="SpecialEventCanvas"
+                                Grid.Row="0" Grid.RowSpan="4"                                
+                                HorizontalOptions="FillAndExpand"
+                                VerticalOptions="FillAndExpand"/>
                 <Button x:Name="GiftBase"
                         Grid.Row="1"
                         BackgroundColor="Transparent"
@@ -36,10 +40,13 @@
                         BackgroundColor="Transparent"
                         BorderColor="Transparent"
                         BorderWidth="0"
-                        HorizontalOptions="CenterAndExpand"
-                        Margin="0, 0, 0, -20"
+                        HorizontalOptions="CenterAndExpand"                        
                         Image="{ext:ImageExtension gift_top_small.png}"
-                        Clicked="Gift_Clicked"/>
+                        Clicked="Gift_Clicked">
+                    <Button.Margin>
+                        <OnPlatform Android="0,0,0,-45" UWP="0,0,0,-20"/>
+                    </Button.Margin>
+                </Button>
                 <Label x:Name="TimerLabel" 
                        Grid.Row="2"
                        HorizontalTextAlignment="Center"/>
@@ -60,7 +67,7 @@
                     Grid.Row="1"
                     BackgroundColor="Green"
                     Clicked="NextButton_Clicked"
-                    IsVisible="False"
+                    InputTransparent="True"
                     Opacity="0"                    
                     HorizontalOptions="FillAndExpand" VerticalOptions="End"
                     TextColor="White"

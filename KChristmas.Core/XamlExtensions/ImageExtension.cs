@@ -12,19 +12,24 @@ namespace KChristmas.Core.XamlExtensions
 
         public object ProvideValue(IServiceProvider provider)
         {
-            if(String.IsNullOrWhiteSpace(ImagePath))
+            return GetPlatformIndependentPath(ImagePath);
+        }
+
+        public static string GetPlatformIndependentPath(string path)
+        {
+            if (String.IsNullOrWhiteSpace(path))
             {
                 return "";
             }
 
-            if (Device.OS == TargetPlatform.Windows || Device.OS == TargetPlatform.WinPhone)
+            if (Device.RuntimePlatform == Device.UWP)
             {
-                return Path.Combine("Assets/Images/", ImagePath);
+                return Path.Combine("Assets/Images/", path);
             }
             else
             {
-                return ImagePath;
+                return path;
             }
         }
-    }
+    }   
 }

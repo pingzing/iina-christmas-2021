@@ -6,13 +6,7 @@ namespace KChristmas.Core.Helpers
 {
     public static class Settings
     {
-        private static ISettings AppSettings
-        {
-            get
-            {
-                return CrossSettings.Current;
-            }
-        }
+        private static ISettings AppSettings => CrossSettings.Current;
 
         #region Setting Constants
         private const string IntroCompleteKey = "IntroCompleteKey";
@@ -31,7 +25,6 @@ namespace KChristmas.Core.Helpers
         private static readonly Version LastSeenVersionDefault = new Version(1, 0, 0);
 
         #endregion
-
 
         public static bool GiftAccepted
         {

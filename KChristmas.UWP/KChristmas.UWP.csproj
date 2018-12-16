@@ -134,6 +134,13 @@
     <Content Include="Assets\Images\gift_top_small.scale-240.png" />
     <Content Include="Assets\Images\gift_top_small.scale-250.png" />
     <Content Include="Assets\Images\gift_top_small.scale-300.png" />
+    <Content Include="Assets\Images\pinkie_bounce_up_1.png" />
+    <Content Include="Assets\Images\pinkie_bounce_up_2.png" />
+    <Content Include="Assets\Images\pinkie_bounce_up_3.png" />
+    <Content Include="Assets\Images\pinkie_confused.png" />
+    <Content Include="Assets\Images\pinkie_woundup_1.png" />
+    <Content Include="Assets\Images\pinkie_woundup_2.png" />
+    <Content Include="Assets\Images\pinkie_woundup_3.png" />
     <Content Include="Assets\Images\reading_glasses_small.scale-100.png" />
     <Content Include="Assets\Images\reading_glasses_small.scale-140.png" />
     <Content Include="Assets\Images\reading_glasses_small.scale-150.png" />
