@@ -9,7 +9,7 @@ using Android.OS;
 using KChristmas.Core;
 using KChristmas.Android;
 
-namespace KChristmas2016.Android
+namespace KChristmas.Android
 {
     [Activity(Label = "Merry Christmas, Kaisa!", Icon = "@drawable/icon",
         Theme = "@style/MainTheme", MainLauncher = true,
