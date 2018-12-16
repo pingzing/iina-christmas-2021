@@ -1,10 +1,10 @@
-﻿using KChristmas2016.Core.Helpers;
+﻿using KChristmas.Core.Helpers;
 using System;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
 
-namespace KChristmas2016.Core
+namespace KChristmas.Core
 {
     public partial class RedemptionPage : ContentPage
     {        

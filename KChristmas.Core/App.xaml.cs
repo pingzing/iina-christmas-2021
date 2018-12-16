@@ -1,4 +1,4 @@
-﻿using KChristmas2016.Core.Helpers;
+﻿using KChristmas.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
-namespace KChristmas2016.Core
+namespace KChristmas.Core
 {
     public partial class App : Application
     {

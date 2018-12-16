@@ -2,7 +2,7 @@ using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 using System;
 
-namespace KChristmas2016.Core.Helpers
+namespace KChristmas.Core.Helpers
 {
     public static class Settings
     {
@@ -46,6 +46,7 @@ namespace KChristmas2016.Core.Helpers
             set { AppSettings.AddOrUpdateValue(GiftRedeemedKey, value); }
         }
 
+        [Obsolete("No longer used in v4.")]
         public static bool IntroComplete
         {
             get { return AppSettings.GetValueOrDefault(IntroCompleteKey, IntroCompleteDefault); }

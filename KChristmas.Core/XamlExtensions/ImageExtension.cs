@@ -3,7 +3,7 @@ using System.IO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KChristmas2016.Core.XamlExtensions
+namespace KChristmas.Core.XamlExtensions
 {
     [ContentProperty("ImagePath")]
     public class ImageExtension : IMarkupExtension

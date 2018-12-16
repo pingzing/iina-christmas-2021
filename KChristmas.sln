@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KChristmas2016.UWP", "KChristmas2016.UWP\KChristmas2016.UWP.csproj", "{05ABBD23-EDD8-48BD-B023-C7F165C3D0C4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KChristmas.UWP", "KChristmas.UWP\KChristmas.UWP.csproj", "{05ABBD23-EDD8-48BD-B023-C7F165C3D0C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KChristmas2016.Core", "KChristmas2016.Core\KChristmas2016.Core.csproj", "{C0BBFD52-B28D-4AEB-8C74-5EECD7670D0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KChristmas.Core", "KChristmas.Core\KChristmas.Core.csproj", "{C0BBFD52-B28D-4AEB-8C74-5EECD7670D0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KChristmas2016.Android", "KChristmas2016.Android\KChristmas2016.Android.csproj", "{503DBAB1-168F-4DE1-AD0D-B53AE2D4D559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KChristmas.Android", "KChristmas.Android\KChristmas.Android.csproj", "{503DBAB1-168F-4DE1-AD0D-B53AE2D4D559}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

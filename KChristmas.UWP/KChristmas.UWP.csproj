@@ -7,8 +7,8 @@
     <ProjectGuid>{05ABBD23-EDD8-48BD-B023-C7F165C3D0C4}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KChristmas2016.UWP</RootNamespace>
-    <AssemblyName>KChristmas2016.UWP</AssemblyName>
+    <RootNamespace>KChristmas.UWP</RootNamespace>
+    <AssemblyName>KChristmas.UWP</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.17763.0</TargetPlatformVersion>
@@ -217,9 +217,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KChristmas2016.Core\KChristmas2016.Core.csproj">
+    <ProjectReference Include="..\KChristmas.Core\KChristmas.Core.csproj">
       <Project>{c0bbfd52-b28d-4aeb-8c74-5eecd7670d0e}</Project>
-      <Name>KChristmas2016.Core</Name>
+      <Name>KChristmas.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

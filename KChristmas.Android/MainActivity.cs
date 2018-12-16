@@ -6,8 +6,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
-using KChristmas2016.Core;
-using KChristmas2016.Android.Droid;
+using KChristmas.Core;
+using KChristmas.Android;
 
 namespace KChristmas2016.Android
 {

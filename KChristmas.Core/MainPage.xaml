@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:KChristmas.Core"
+             xmlns:ext="clr-namespace:KChristmas.Core.XamlExtensions"
+             x:Class="KChristmas.Core.MainPage"
+             Appearing="ContentPage_Appearing"             
+             Title="Merry Christmas">
+
+    <Grid x:Name="ContentRoot" Padding="10" BackgroundColor="Transparent">
+
+        <Grid x:Name="TooEarlyPanel" Opacity="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Button x:Name="GiftBase"
+                        Grid.Row="1"
+                        BackgroundColor="Transparent"
+                        BorderColor="Transparent"
+                        BorderWidth="0"
+                        HorizontalOptions="CenterAndExpand"
+                        Image="{ext:ImageExtension gift_base_small.png}"
+                        Clicked="Gift_Clicked"/>
+                <Button x:Name="GiftTop" 
+                        Grid.Row="0" 
+                        BackgroundColor="Transparent"
+                        BorderColor="Transparent"
+                        BorderWidth="0"
+                        HorizontalOptions="CenterAndExpand"
+                        Margin="0, 0, 0, -20"
+                        Image="{ext:ImageExtension gift_top_small.png}"
+                        Clicked="Gift_Clicked"/>
+                <Label x:Name="TimerLabel" 
+                       Grid.Row="2"
+                       HorizontalTextAlignment="Center"/>
+                <Label x:Name="TooEarlyLabel1" 
+                       Grid.Row="3"
+                       HorizontalTextAlignment="Center" 
+                       Text="Hey, not yet!"
+                       Style="{DynamicResource SubtitleStyle}"/>
+                <Label x:Name="TooEarlyLabel2" 
+                       Grid.Row="4"
+                       HorizontalTextAlignment="Center" 
+                       Text="It's not Christmas yet! You're going to have to wait! Come back on the 24th!"/>
+            </Grid>
+
+            <!--This is where the floating hint labels go. They're all stacked on Row 0.-->
+
+            <Button x:Name="NextButton"
+                    Grid.Row="1"
+                    BackgroundColor="Green"
+                    Clicked="NextButton_Clicked"
+                    IsVisible="False"
+                    Opacity="0"                    
+                    HorizontalOptions="FillAndExpand" VerticalOptions="End"
+                    TextColor="White"
+                    Text="Timer's up! Tap here to open your present!"/>
+        </Grid>
+    </Grid>
+</ContentPage>

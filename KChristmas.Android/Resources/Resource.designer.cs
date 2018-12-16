@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("KChristmas2016.Android.Droid.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("KChristmas.Android.Resource", IsApplication=true)]
 
-namespace KChristmas2016.Android.Droid
+namespace KChristmas.Android
 {
 	
 	
@@ -26,7 +26,7 @@ namespace KChristmas2016.Android.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::KChristmas2016.Android.Droid.Resource.Attribute.actionBarSize;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::KChristmas.Android.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation
