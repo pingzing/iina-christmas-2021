@@ -1,11 +1,10 @@
 ﻿using KChristmas.Core.Helpers;
-using KChristmas.Core.XamlExtensions;
+using KChristmas.Core.SpecialEvents;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -13,7 +12,7 @@ namespace KChristmas.Core
 {
     public partial class MainPage : ContentPage
     {
-        private const uint StartingSpecialEventCooldown = 50;
+        private const uint StartingSpecialEventCooldown = 1;
         private readonly bool SkipCountdown = false;
         private readonly DateTime ChristmasDate = new DateTime(2018, 12, 24, 18, 0, 0);
         private readonly HttpClient _httpClient = new HttpClient();
@@ -22,17 +21,19 @@ namespace KChristmas.Core
         private List<string> _giftHints = new List<string>();
         private List<string> _seenHints = new List<string>();
         private Random rand = new Random();
-        private uint CurrentSpecialEventCooldown = 15;
+        private uint CurrentSpecialEventCooldown = 1;
+        private Pinkie _pinkieEvent;
 
         public MainPage()
         {
 #if !DEBUG
             SkipCountdown = false;
 #endif
-            InitializeComponent();            
+            InitializeComponent();
 
             //Init with locally-cached hints
-            InitHints(Settings.GiftHints);            
+            InitHints(Settings.GiftHints);
+            _pinkieEvent = new Pinkie(this);
         }
 
         private void InitHints(string unbrokenHintString)
@@ -44,14 +45,14 @@ namespace KChristmas.Core
         }
 
         private string GetHint()
-        {            
-            if(_giftHints.Count <= 0 && _seenHints.Count > 0)
+        {
+            if (_giftHints.Count <= 0 && _seenHints.Count > 0)
             {
                 Debug.WriteLine("SeenHints emptied, GiftHints refilled.");
                 _giftHints = new List<string>(_seenHints);
                 _seenHints.Clear();
             }
-            if(_giftHints.Count > 0)
+            if (_giftHints.Count > 0)
             {
                 int hintIndex = rand.Next() % _giftHints.Count;
                 string hint = _giftHints[hintIndex];
@@ -71,7 +72,7 @@ namespace KChristmas.Core
             await Task.Delay(1000);
             TooEarlyPanel.Opacity = 0;
             TooEarlyPanel.IsVisible = true;
-            await TooEarlyPanel.FadeTo(1, 500);           
+            await TooEarlyPanel.FadeTo(1, 500);
 
             //Set up gift box hints
             try
@@ -97,7 +98,7 @@ namespace KChristmas.Core
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
                     var timeTillChristmas = ChristmasDate - DateTime.Now;
-                    if(timeTillChristmas > TimeSpan.Zero)
+                    if (timeTillChristmas > TimeSpan.Zero)
                     {
                         TimerLabel.Text = $"{timeTillChristmas.Days}d {timeTillChristmas.Hours}h {timeTillChristmas.Minutes}m {timeTillChristmas.Seconds}s";
                         return true;
@@ -107,7 +108,7 @@ namespace KChristmas.Core
                         TimerLabel.Text = "0d 0h 0m 0s";
                         NextButton.IsVisible = true;
                         NextButton.InputTransparent = false;
-                        Task.WhenAll(                            
+                        Task.WhenAll(
                             TooEarlyLabel1.FadeTo(0, 2000),
                             TooEarlyLabel2.FadeTo(0, 2000),
                             TimerLabel.TranslateTo(0, 50, 4000),
@@ -116,7 +117,7 @@ namespace KChristmas.Core
                         );
                         return false;
                     }
-                });                
+                });
             }
             else
             {
@@ -124,9 +125,9 @@ namespace KChristmas.Core
                 NextButton.InputTransparent = false;
             }
         }
-        
+
         private async void Gift_Clicked(object sender, EventArgs e)
-        {            
+        {
             var storyboard = new Animation();
             var shakeUpHigh = new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 20, Easing.SpringIn);
             var fromHighToLow = new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 20, -20, Easing.SpringIn);
@@ -145,128 +146,38 @@ namespace KChristmas.Core
 
             storyboard.Commit(GiftBase, "ShakeAnimation", 16, 1000);
 
-            if (CurrentSpecialEventCooldown == 0 && rand.Next() % 15 == 0)
+            if (CurrentSpecialEventCooldown == 0)//&& rand.Next() % 15 == 0)
             {
                 await RandomSpecialEvent();
                 CurrentSpecialEventCooldown = StartingSpecialEventCooldown;
             }
             else
             {
-                await ShowFloatingText(GetHint());
+                Debug.WriteLine($"Current Special Event Cooldown counter is: {CurrentSpecialEventCooldown}.");
                 if (CurrentSpecialEventCooldown > 0)
                 {
                     CurrentSpecialEventCooldown -= 1;
                 }
-            }                                    
+                await ShowFloatingText(GetHint());
+            }
         }
 
         private async Task RandomSpecialEvent()
         {
-            // For now, we only have one. In the future, we can do some randomness here.
-            Rectangle baseRect = GiftBase.Bounds;
-            double xMid = baseRect.X + baseRect.Width / 2;
-            double pinkieHeight = 94;
-            double pinkieWidth = 94;
+            GiftBase.InputTransparent = true;
+            GiftTop.InputTransparent = true;
 
-            Image pinkieImage = new Image
-            {
-                HeightRequest = 94,
-                WidthRequest = 94,
-                Source = ImageExtension.GetPlatformIndependentPath("pinkie_woundup_1.png")
-            };
-            double pinkieMid = pinkieImage.WidthRequest / 2;
-            pinkieImage.Rotation = 270;
+            // For now, we only have one. In the future, we can do some randomness here.            
+            await _pinkieEvent.Run(GiftBase, GiftTop, SpecialEventCanvas);
 
-            AbsoluteLayout.SetLayoutBounds(pinkieImage, new Rectangle(xMid - pinkieMid, baseRect.Y - 40, pinkieWidth, pinkieHeight));
-            SpecialEventCanvas.Children.Add(pinkieImage);
-
-            double totalMillis = 3000.0;
-            double tick = 25.0 / totalMillis;
-            var boxShudderSlamOpen = new Animation
-            {
-                { 0.0, tick * 1, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 0, 10) },
-                { tick * 1, tick * 2, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 2, tick * 3, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 3, tick * 4, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
-                { tick * 4, tick * 5, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
-                { tick * 5, tick * 6, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
-                { tick * 6, tick * 7, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
-
-                { tick * 7, tick * 8, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 8, tick * 9, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 9, tick * 10, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
-                { tick * 10, tick * 11, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
-                { tick * 11, tick * 12, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
-                { tick * 12, tick * 13, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
-
-                { tick * 13, tick * 14, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 14, tick * 15, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 15, tick * 16, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
-                { tick * 16, tick * 17, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
-                { tick * 17, tick * 18, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
-                { tick * 18, tick * 19, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
-
-                { tick * 19, tick * 20, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 20, tick * 21, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 21, tick * 22, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
-                { tick * 22, tick * 23, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
-                { tick * 23, tick * 24, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
-                { tick * 24, tick * 25, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
-
-                { tick * 25, tick * 26, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 26, tick * 27, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, 10, -10) },
-                { tick * 27, tick * 28, new Animation(v => { GiftBase.TranslationX = v; GiftTop.TranslationX = v; }, -10, 0) },
-                { tick * 28, tick * 29, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 10) },
-                { tick * 29, tick * 30, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 10, -10) },
-                { tick * 30, tick * 31, new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, -10, 0) },
-
-                { 0.95, 0.97, new Animation(v => {pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_woundup_2.png"); }, 0, 0) },
-                { 0.95, 0.98, new Animation(v => {GiftBase.TranslationY = v; }, 0, -30, Easing.SpringOut) },
-                { 0.97, 1.0, new Animation(v => {pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_woundup_3.png"); }, 0, 0) },
-                { 0.98, 1.0, new Animation(v => {GiftBase.TranslationY = v; }, -30, 0, Easing.SpringOut) },
-                { 0.95, 1.0, new Animation(v => { GiftTop.TranslationY = v; }, 0, -300, Easing.CubicOut) }
-            };
-
-            boxShudderSlamOpen.Commit(GiftBase, "BoxShduder", 16, (uint)totalMillis);
-            await Task.Delay((int)totalMillis);
-
-            await Task.Delay(750);
-            pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_woundup_2.png");
-            await Task.Delay(750);
-            await pinkieImage.TranslateTo(0, 20, 1500);
-
-            pinkieImage.Rotation = 0;
-            pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_bounce_up_3.png");
-            await pinkieImage.TranslateTo(0, -20, 300, Easing.SpringOut);
-
-            ShowFloatingText("Hi!", Color.HotPink);
-            await Task.Delay(2000);
-
-            pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_confused.png");
-            ShowFloatingText("Hey, wait a minute...", Color.HotPink);
-            await Task.Delay(4000);
-
-            ShowFloatingText("...this isn't the Hearth's Warming Eve party!", Color.HotPink);
-            await Task.Delay(4000);
-
-            pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_bounce_up_3.png");
-            ShowFloatingText("Ohmigosh, I gotta get going!", Color.HotPink);
-            await Task.Delay(4000);
-
-            ShowFloatingText("I hope you're having lots and lots of fun though!", Color.HotPink);
-            await Task.Delay(4000);
-
-            await ShowFloatingText("Byeeeee!", Color.HotPink);
-            await pinkieImage.TranslateTo(0, 40, 300, Easing.SpringIn);
-            pinkieImage = null;
-            SpecialEventCanvas.Children.Clear();
-            await GiftTop.TranslateTo(0, 0, 300, Easing.SpringIn);
+            GiftBase.InputTransparent = false;
+            GiftTop.InputTransparent = false;
         }
 
-        private async Task ShowFloatingText(string text, Color? textColor = null)
+        public async Task ShowFloatingText(string text, Color? textColor = null)
         {
             Label floatingHintLabel = new Label
-            {                
+            {
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
                 VerticalOptions = LayoutOptions.Center,
                 TranslationY = -130,
@@ -299,7 +210,7 @@ namespace KChristmas.Core
 
             await NavigateToRedemptionPage();
         }
-        
+
         private async Task NavigateToRedemptionPage()
         {
             await ((App)App.Current).Navigation.PushAsync(new RedemptionPage());

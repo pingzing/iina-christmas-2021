@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-  </PropertyGroup>
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>True</DebugSymbols>
+  </PropertyGroup>  
 
   <ItemGroup>
     <None Remove="App.xaml" />

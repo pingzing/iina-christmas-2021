@@ -24,6 +24,9 @@ namespace KChristmas.Core.Helpers
         private const string LastSeenVersionKey = "LastSeenVersion";
         private static readonly Version LastSeenVersionDefault = new Version(1, 0, 0);
 
+        private const string PinkieSeenCountKey = nameof(PinkieSeenCountKey);
+        private static readonly int PinkieSeenCountDefault = 0;
+
         #endregion
 
         public static bool GiftAccepted
@@ -39,7 +42,7 @@ namespace KChristmas.Core.Helpers
             set { AppSettings.AddOrUpdateValue(GiftRedeemedKey, value); }
         }
 
-        [Obsolete("No longer used in v4.")]
+        [Obsolete("No longer used in v3.")]
         public static bool IntroComplete
         {
             get { return AppSettings.GetValueOrDefault(IntroCompleteKey, IntroCompleteDefault); }
@@ -48,8 +51,14 @@ namespace KChristmas.Core.Helpers
 
         public static string GiftHints
         {
-            get { return AppSettings.GetValueOrDefault(GiftHintsKey, GiftHintsDefault); }
-            set { AppSettings.AddOrUpdateValue(GiftHintsKey, value); }
+            get => AppSettings.GetValueOrDefault(GiftHintsKey, GiftHintsDefault);
+            set => AppSettings.AddOrUpdateValue(GiftHintsKey, value);
+        }
+
+        public static int PinkieSeenCount
+        {
+            get => AppSettings.GetValueOrDefault(PinkieSeenCountKey, PinkieSeenCountDefault);
+            set => AppSettings.AddOrUpdateValue(PinkieSeenCountKey, value);
         }
 
         public static Version LastSeenVersion
