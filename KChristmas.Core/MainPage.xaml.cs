@@ -12,7 +12,7 @@ namespace KChristmas.Core
 {
     public partial class MainPage : ContentPage
     {
-        private const uint StartingSpecialEventCooldown = 50;
+        private const uint StartingSpecialEventCooldown = 15;
         private readonly bool SkipCountdown = false;
         private readonly DateTime ChristmasDate = new DateTime(2018, 12, 24, 18, 0, 0);
 
@@ -148,7 +148,7 @@ namespace KChristmas.Core
 
             storyboard.Commit(GiftBase, "ShakeAnimation", 16, 1000);
 
-            if (CurrentSpecialEventCooldown == 0 && rand.Next() % 15 == 0)
+            if (CurrentSpecialEventCooldown == 0 && rand.Next() % 7 == 0)
             {
                 await RandomSpecialEvent();
                 CurrentSpecialEventCooldown = StartingSpecialEventCooldown;

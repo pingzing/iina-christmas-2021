@@ -7,32 +7,47 @@
              Title="Yaaaaay!">
 
     <Grid x:Name="ContentRoot" Padding="10" BackgroundColor="Transparent">
-        <Grid x:Name="AcceptGiftPanel">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <ScrollView>
+            <Grid x:Name="AcceptGiftPanel">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-            <StackLayout HorizontalOptions="CenterAndExpand"
-                         VerticalOptions="CenterAndExpand">
-                <Label x:Name="AcceptGiftPanelTopCaption"
-                       HorizontalTextAlignment="Center"
-                       LineBreakMode="WordWrap"
-                       Opacity="0"
-                       Scale="2"
-                       Text="Your gift this year is a little intangible..."/>
-                <Image x:Name="AcceptGiftImage" HorizontalOptions="CenterAndExpand"
-                       Opacity="0"
-                       Scale="2"
-                       Source="{ext:ImageExtension sad_kitty.jpg}"/>
-                <Label x:Name="AcceptGiftPanelCaption"
-                       HorizontalTextAlignment="Center"
-                       LineBreakMode="WordWrap"
-                       Opacity="0"
-                       Scale="2"
-                       Text="Congratulations! You are entitled to one (1) free professional massage at the massage parlor of your choice, with all expenses to be paid by Neil!"/>
-            </StackLayout>
-        </Grid>
+                <StackLayout HorizontalOptions="CenterAndExpand"
+                             VerticalOptions="CenterAndExpand">
+                    <Label x:Name="AcceptGiftPanelTopCaption"
+                           HorizontalTextAlignment="Center"
+                           LineBreakMode="WordWrap"
+                           Opacity="0"
+                           Scale="2"
+                           Text="Your gift this year is a little intangible..."/>
+                    <Label x:Name="AcceptGiftPanelTopSecondCaption"
+                           HorizontalTextAlignment="Center"
+                           LineBreakMode="WordWrap"
+                           Opacity="0"
+                           Scale="2"
+                           Text="...again...."/>
+                    <Image x:Name="AcceptGiftImage" HorizontalOptions="CenterAndExpand"
+                           Opacity="0"
+                           Scale="2"
+                           Source="{ext:ImageExtension sad_kitty.jpg}"/>
+                    <Label x:Name="AcceptGiftPanelCaption"
+                           HorizontalTextAlignment="Center"
+                           LineBreakMode="WordWrap"
+                           Opacity="0"
+                           Scale="2"
+                           Text="Congratulations! You are entitled to the assistance of one (1) Neil in buying a new phone!"/>
+                    <Label x:Name="AcceptGiftPanelCaptionSecond"
+                           HorizontalTextAlignment="Center"
+                           FontSize="Micro"
+                           LineBreakMode="WordWrap"
+                           Opacity="0"
+                           Scale="2"
+                           Text="(Neil will also pay for it. no bankrupt plzkthx)"/>
+                </StackLayout>
+            </Grid>
+        </ScrollView>
 
     </Grid>
 </ContentPage>

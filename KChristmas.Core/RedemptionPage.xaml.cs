@@ -32,12 +32,20 @@ namespace KChristmas.Core
                 AcceptGiftPanelTopCaption.ScaleTo(1, 2000));
 
             await Task.WhenAll(
+                AcceptGiftPanelTopSecondCaption.FadeTo(1, 2000),
+                AcceptGiftPanelTopSecondCaption.ScaleTo(1, 2000));
+
+            await Task.WhenAll(
                 AcceptGiftImage.ScaleTo(1, 2000),
                 AcceptGiftImage.FadeTo(1, 2000));
 
             await Task.WhenAll(
                 AcceptGiftPanelCaption.ScaleTo(1, 2000),
                 AcceptGiftPanelCaption.FadeTo(1, 2000));
+
+            await Task.WhenAll(
+                AcceptGiftPanelCaptionSecond.ScaleTo(1, 2000),
+                AcceptGiftPanelCaptionSecond.FadeTo(1, 2000));
         }
     }
 }

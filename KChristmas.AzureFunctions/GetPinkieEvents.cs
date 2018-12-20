@@ -19,8 +19,8 @@ namespace KChristmas.AzureFunctions
                 { "pinkie_confused.png", "Soooooo...", 2000 },
                 { null, "I don't get it.", 3000 },
                 { null, "Shouldn't all this shaking break the present?", 3000 },
-                { null, "Unless...", 3000 },
-                { "pinkie_bounce_up_3.png", "It's a SHAKE-POWERED-PRESENT! AHHHH!", 4000 }
+                { "pinkie_bounce_up_3.png", "Unless...", 3000 },
+                { null, "It's a SHAKE-POWERED-PRESENT! AHHHH!", 4000 }
             },
         };
 
