@@ -12,28 +12,28 @@ namespace KChristmas.Core
 {
     public partial class MainPage : ContentPage
     {
-        private const uint StartingSpecialEventCooldown = 1;
+        private const uint StartingSpecialEventCooldown = 50;
         private readonly bool SkipCountdown = false;
         private readonly DateTime ChristmasDate = new DateTime(2018, 12, 24, 18, 0, 0);
-        private readonly HttpClient _httpClient = new HttpClient();
-        private const string GetGiftHintsUrl = "https://kc2016.azurewebsites.net/api/GetGiftHints?code=7c5RrOfucfopvE0g1woo10kMHU/pz4v5MHd8Njo0m00s8TuN1PvAfA==";
 
+        private NetworkService _networkService;
         private List<string> _giftHints = new List<string>();
         private List<string> _seenHints = new List<string>();
         private Random rand = new Random();
-        private uint CurrentSpecialEventCooldown = 1;
-        private Pinkie _pinkieEvent;
+        private uint CurrentSpecialEventCooldown = 5;
+        private PinkieSpecialEvent _pinkieEvent;
 
-        public MainPage()
+        public MainPage(NetworkService networkService)
         {
 #if !DEBUG
             SkipCountdown = false;
 #endif
             InitializeComponent();
 
+            _networkService = networkService;
             //Init with locally-cached hints
             InitHints(Settings.GiftHints);
-            _pinkieEvent = new Pinkie(this);
+            _pinkieEvent = new PinkieSpecialEvent(this, networkService);
         }
 
         private void InitHints(string unbrokenHintString)
@@ -67,30 +67,19 @@ namespace KChristmas.Core
         }
 
         private async void ContentPage_Appearing(object sender, EventArgs e)
-        {
+        {            
+
             //Set up panel state
             await Task.Delay(1000);
             TooEarlyPanel.Opacity = 0;
             TooEarlyPanel.IsVisible = true;
+
             await TooEarlyPanel.FadeTo(1, 500);
 
-            //Set up gift box hints
-            try
-            {
-                string response = await _httpClient.GetStringAsync(GetGiftHintsUrl);
-                if (String.IsNullOrWhiteSpace(response))
-                {
-                    return;
-                }
-
-                // Update local cache
-                Settings.GiftHints = response.Trim('"');
-                InitHints(Settings.GiftHints);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Failed to get gift hints list.");
-            }
+            // Undo possible navigation to next page
+            await Task.WhenAll(
+                GiftTop.TranslateTo(0, 0, 500),
+                GiftTop.FadeTo(1, 500));
 
             if (DateTime.Now < ChristmasDate && !SkipCountdown)
             {
@@ -124,6 +113,19 @@ namespace KChristmas.Core
                 NextButton.Opacity = 1;
                 NextButton.InputTransparent = false;
             }
+
+            //Set up gift box hints      
+            Task UpdatePinkieTask = _pinkieEvent.UpdateEventsFromRemote();
+            string response = await _networkService.GetGiftHints();
+            if (String.IsNullOrWhiteSpace(response))
+            {
+                return;
+            }
+
+            // Update local cache
+            Settings.GiftHints = response.Trim('"');
+            InitHints(Settings.GiftHints);
+            await UpdatePinkieTask;            
         }
 
         private async void Gift_Clicked(object sender, EventArgs e)
@@ -146,7 +148,7 @@ namespace KChristmas.Core
 
             storyboard.Commit(GiftBase, "ShakeAnimation", 16, 1000);
 
-            if (CurrentSpecialEventCooldown == 0)//&& rand.Next() % 15 == 0)
+            if (CurrentSpecialEventCooldown == 0 && rand.Next() % 15 == 0)
             {
                 await RandomSpecialEvent();
                 CurrentSpecialEventCooldown = StartingSpecialEventCooldown;
@@ -208,14 +210,9 @@ namespace KChristmas.Core
                 GiftTop.FadeTo(0, 1000),
                 GiftTop.TranslateTo(0, -100, 1000));
 
-            await NavigateToRedemptionPage();
-        }
+            await TooEarlyPanel.FadeTo(0, 1000);
 
-        private async Task NavigateToRedemptionPage()
-        {
             await ((App)App.Current).Navigation.PushAsync(new RedemptionPage());
-            ((App)App.Current).Navigation.Navigation.RemovePage(this);
-            _httpClient.Dispose();
         }
     }
 }

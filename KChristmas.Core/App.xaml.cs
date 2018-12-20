@@ -24,13 +24,15 @@ namespace KChristmas.Core
             {
                 Settings.GiftAccepted = false;
                 Settings.GiftHints = null;
+                Settings.PinkieSeenCount = 0;
                 Settings.GiftRedeemed = false;
                 Settings.IntroComplete = false;
             }
             Settings.LastSeenVersion = CURRENT_VERSION;
 
+            NetworkService networkService = new NetworkService();
             MainPage = Navigation;
-            Navigation.PushAsync(new MainPage());
+            Navigation.PushAsync(new MainPage(networkService));
         }
 
         protected override void OnStart()
