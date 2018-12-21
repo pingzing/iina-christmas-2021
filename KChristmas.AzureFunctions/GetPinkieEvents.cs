@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -31,8 +31,24 @@ namespace KChristmas.AzureFunctions
                 { null, "Andesite, aplite, basanite, boninite, blairmorite, dacite...", 3000 },
                 { null, "...diorite, dunite, essexite, foidolite, granite, kimberlite...", 3000 },
                 { null, "...invite, polite, excite, ignite, erudite, lazurite...", 3000 },
-                { null, "...so like, I totally know all about rocks! Which means that I know YOU rock!", 5000 },
+                { null, "...so like, I totally know all about rocks!", 4000 },
+                { null, "Which means that I know YOU rock!", 3000 },
             },
+            new PinkieEvent(Guid.Parse("5a7dffbf-9ae2-49f3-bcb7-bdc10dc36187")) {
+                { null, "Hey!", 2000 },
+                { "pinkie_confused.png", "What do you call...", 2000 },
+                { null, "A RHINO crossed with an ELEPHANT?", 5000 },
+                { "pinkie_bounce_up_3.png", "A RHINOPHANT! *snort* HEE HEE HEE!", 4000 },
+            },
+            new PinkieEvent(Guid.Parse("eda3de30-39e5-4fcd-9a31-61f23518e7c5]")) {
+                { null, "♪ It's true some days are dark and lonely... ♪", 4000 },
+                { null, "♪ ...and maybe you feel sad... ♪", 3000 },
+                { null, "♪ But I will be there to show you that it isn't that bad! ♪", 4000 },
+                { null, "♪ There's one thing that makes me happy, ♪", 3000 },
+                { null, "♪ ...and makes my whole life worthwhile... ♪", 3000 },
+                { null, "♪ ...and that's when I talk to my friends and get them to SMILE! ♪", 5000 },
+                { null, "Yeah!", 2000 },
+            }
         };
 
         [FunctionName("GetPinkieEvents")]
