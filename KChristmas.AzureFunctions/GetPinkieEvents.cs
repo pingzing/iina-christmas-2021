@@ -22,6 +22,10 @@ namespace KChristmas.AzureFunctions
                 { "pinkie_bounce_up_3.png", "Unless...", 3000 },
                 { null, "It's a SHAKE-POWERED-PRESENT! AHHHH!", 4000 }
             },
+            new PinkieEvent(Guid.Parse("d09f236d-cc83-477c-b159-7d6c0a32cf9a")) {
+                { null, "My head is all spinny...", 4000 },
+                { null, "SHAKE HARDER! Wheeeee!", 3000 }
+            }
         };
 
         [FunctionName("GetPinkieEvents")]
