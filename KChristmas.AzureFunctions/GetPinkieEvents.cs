@@ -25,7 +25,14 @@ namespace KChristmas.AzureFunctions
             new PinkieEvent(Guid.Parse("d09f236d-cc83-477c-b159-7d6c0a32cf9a")) {
                 { null, "My head is all spinny...", 4000 },
                 { null, "SHAKE HARDER! Wheeeee!", 3000 }
-            }
+            },
+            new PinkieEvent(Guid.Parse("d32836f2-cc0e-41e2-a611-36ddae0168cf")) {
+                { null, "There's over eighty different kinds of rock!", 4000 },
+                { null, "Andesite, aplite, basanite, boninite, blairmorite, dacite...", 3000 },
+                { null, "...diorite, dunite, essexite, foidolite, granite, kimberlite...", 3000 },
+                { null, "...invite, polite, excite, ignite, erudite, lazurite...", 3000 },
+                { null, "...so like, I totally know all about rocks! Which means that I know YOU rock!", 5000 },
+            },
         };
 
         [FunctionName("GetPinkieEvents")]

@@ -33,7 +33,8 @@ namespace KChristmas.AzureFunctions
 + "Alas, poor boxio. We knew him well.|You hear a voice faintly shout 'We don't want any!'|The box screams.|The box goes flying into the sky.|"
 + "WELP|What's...in the box? Could it be....a rrrrrrubber biscuit?|SIX FOOT, SEVEN FOOT, EIGHT FOOT, BUNCH!|BEEP BOOP INVALID PASSCODE|"
 + "It giggles.|The box moans suggestively.|The box gasps.|You hear what sounds like hooves clopping on stone.|ALL HAIL THE SUN TRIUMPHANT|Praise the sun!|"
-+ "The moon refused to yield.|But it failed!|*starving walrus noises*|The box begins exploding. ...slowly.";
++ "The moon refused to yield.|But it failed!|*starving walrus noises*|The box begins exploding. ...slowly.|You hear rattling, as though " +
+            "though the box were filled with pebbles.|Each shake produces an ecstatic squeak.|You hear a whoosh, and feel the sides of the box inflate slightly.";
 
         [FunctionName("GetGiftHints")]
         public static async Task<IActionResult> Run(
