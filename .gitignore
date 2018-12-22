@@ -3,7 +3,6 @@
 
 #Project-Specific
 *.appx
-raw_assets/
 do not commit/
 
 # User-specific files
