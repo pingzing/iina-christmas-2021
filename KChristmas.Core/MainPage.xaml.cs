@@ -1,5 +1,6 @@
 ﻿using KChristmas.Core.Helpers;
 using KChristmas.Core.SpecialEvents;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,7 +15,7 @@ namespace KChristmas.Core
     {
         private const uint StartingSpecialEventCooldown = 15;
         private readonly bool SkipCountdown = false;
-        private readonly DateTime ChristmasDate = new DateTime(2018, 12, 24, 18, 0, 0);
+        private readonly DateTime ChristmasDate = new DateTime(2019, 12, 24, 18, 0, 0);
 
         private NetworkService _networkService;
         private List<string> _giftHints = new List<string>();
@@ -32,15 +33,15 @@ namespace KChristmas.Core
 
             _networkService = networkService;
             //Init with locally-cached hints
-            InitHints(Settings.GiftHints);
+            InitHints(Settings.GiftHintsV2);
             _pinkieEvent = new PinkieSpecialEvent(this, networkService);
         }
 
-        private void InitHints(string unbrokenHintString)
+        private void InitHints(string hintStringJson)
         {
-            if (Settings.GiftHints != null)
+            if (Settings.GiftHintsV2 != null)
             {
-                _giftHints = unbrokenHintString.Split('|').ToList();
+                _giftHints = JsonConvert.DeserializeObject<string[]>(hintStringJson).ToList();
             }
         }
 
@@ -67,7 +68,7 @@ namespace KChristmas.Core
         }
 
         private async void ContentPage_Appearing(object sender, EventArgs e)
-        {            
+        {
 
             //Set up panel state
             await Task.Delay(1000);
@@ -123,9 +124,9 @@ namespace KChristmas.Core
             }
 
             // Update local cache
-            Settings.GiftHints = response.Trim('"');
-            InitHints(Settings.GiftHints);
-            await UpdatePinkieTask;            
+            Settings.GiftHintsV2 = response;
+            InitHints(Settings.GiftHintsV2);
+            await UpdatePinkieTask;
         }
 
         private async void Gift_Clicked(object sender, EventArgs e)

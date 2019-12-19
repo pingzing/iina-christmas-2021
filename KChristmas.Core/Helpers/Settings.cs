@@ -49,10 +49,20 @@ namespace KChristmas.Core.Helpers
             set { AppSettings.AddOrUpdateValue(IntroCompleteKey, value); }
         }
 
+        [Obsolete("No longer used in v4. Use GiftHintsV2, instead.")]
         public static string GiftHints
         {
             get => AppSettings.GetValueOrDefault(GiftHintsKey, GiftHintsDefault);
             set => AppSettings.AddOrUpdateValue(GiftHintsKey, value);
+        }
+
+        /// <summary>
+        /// A json array of strings.
+        /// </summary>
+        public static string GiftHintsV2
+        {
+            get => AppSettings.GetValueOrDefault(GiftHintsV2, GiftHintsDefault);
+            set => AppSettings.AddOrUpdateValue(GiftHintsV2, value);
         }
 
         public static int PinkieSeenCount
