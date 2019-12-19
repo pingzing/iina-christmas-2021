@@ -1,25 +1,14 @@
-using Plugin.Settings;
-using Plugin.Settings.Abstractions;
+using Xamarin.Essentials;
 using System;
 
 namespace KChristmas.Core.Helpers
 {
     public static class Settings
     {
-        private static ISettings AppSettings => CrossSettings.Current;
-
         #region Setting Constants
-        private const string IntroCompleteKey = "IntroCompleteKey";
-        private static readonly bool IntroCompleteDefault = false;
 
         private const string GiftAcceptedKey = "GiftAcceptedKey";
         private static readonly bool GiftAcceptedDefault = false;
-
-        private const string GiftRedeemedKey = "GiftRedeemedKey";
-        private static readonly bool GiftRedeemedDefault = false;
-
-        private const string GiftHintsKey = "GiftHintsKeys";
-        private static readonly string GiftHintsDefault = null;
 
         private const string LastSeenVersionKey = "LastSeenVersion";
         private static readonly Version LastSeenVersionDefault = new Version(1, 0, 0);
@@ -31,29 +20,8 @@ namespace KChristmas.Core.Helpers
 
         public static bool GiftAccepted
         {
-            get { return AppSettings.GetValueOrDefault(GiftAcceptedKey, GiftAcceptedDefault); }
-            set { AppSettings.AddOrUpdateValue(GiftAcceptedKey, value); }
-        }
-
-        [Obsolete("No longer used! Just using GiftAccepted now.")]
-        public static bool GiftRedeemed
-        {
-            get { return false; }
-            set { AppSettings.AddOrUpdateValue(GiftRedeemedKey, value); }
-        }
-
-        [Obsolete("No longer used in v3.")]
-        public static bool IntroComplete
-        {
-            get { return AppSettings.GetValueOrDefault(IntroCompleteKey, IntroCompleteDefault); }
-            set { AppSettings.AddOrUpdateValue(IntroCompleteKey, value); }
-        }
-
-        [Obsolete("No longer used in v4. Use GiftHintsV2, instead.")]
-        public static string GiftHints
-        {
-            get => AppSettings.GetValueOrDefault(GiftHintsKey, GiftHintsDefault);
-            set => AppSettings.AddOrUpdateValue(GiftHintsKey, value);
+            get { return Preferences.Get(GiftAcceptedKey, GiftAcceptedDefault); }
+            set { Preferences.Set(GiftAcceptedKey, value); }
         }
 
         /// <summary>
@@ -61,21 +29,21 @@ namespace KChristmas.Core.Helpers
         /// </summary>
         public static string GiftHintsV2
         {
-            get => AppSettings.GetValueOrDefault(GiftHintsV2, GiftHintsDefault);
-            set => AppSettings.AddOrUpdateValue(GiftHintsV2, value);
+            get => Preferences.Get(nameof(GiftHintsV2), null);
+            set => Preferences.Set(nameof(GiftHintsV2), value);
         }
 
         public static int PinkieSeenCount
         {
-            get => AppSettings.GetValueOrDefault(PinkieSeenCountKey, PinkieSeenCountDefault);
-            set => AppSettings.AddOrUpdateValue(PinkieSeenCountKey, value);
+            get => Preferences.Get(PinkieSeenCountKey, PinkieSeenCountDefault);
+            set => Preferences.Set(PinkieSeenCountKey, value);
         }
 
         public static Version LastSeenVersion
         {
             get
             {
-                string lastSeenVersion = AppSettings.GetValueOrDefault(LastSeenVersionKey, (string)null);
+                string lastSeenVersion = Preferences.Get(LastSeenVersionKey, (string)null);
                 if (String.IsNullOrWhiteSpace(lastSeenVersion))
                 {
                     return LastSeenVersionDefault;
@@ -88,7 +56,7 @@ namespace KChristmas.Core.Helpers
             set
             {
                 string versionAsString = value.ToString(3);
-                AppSettings.AddOrUpdateValue(LastSeenVersionKey, versionAsString);
+                Preferences.Set(LastSeenVersionKey, versionAsString);
             }
         }
 

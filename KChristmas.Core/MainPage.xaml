@@ -2,8 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:KChristmas.Core"
              xmlns:ext="clr-namespace:KChristmas.Core.XamlExtensions"
-             x:Class="KChristmas.Core.MainPage"
-             Appearing="ContentPage_Appearing"             
+             x:Class="KChristmas.Core.MainPage"                          
              Title="Merry Christmas">
 
     <Grid x:Name="ContentRoot" Padding="10" BackgroundColor="Transparent">
@@ -44,7 +43,10 @@
                         Image="{ext:ImageExtension gift_top_small.png}"
                         Clicked="Gift_Clicked">
                     <Button.Margin>
-                        <OnPlatform Android="0,0,0,-45" UWP="0,0,0,-20"/>
+                        <OnPlatform x:TypeArguments="Thickness">
+                            <On Platform="UWP" Value="0,0,0,-20"/>
+                            <On Platform="Android" Value="0,0,0,-45"/>
+                        </OnPlatform>
                     </Button.Margin>
                 </Button>
                 <Label x:Name="TimerLabel" 

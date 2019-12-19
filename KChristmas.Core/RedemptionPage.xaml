@@ -27,6 +27,7 @@
                            LineBreakMode="WordWrap"
                            Opacity="0"
                            Scale="2"
+                           FontAttributes="Italic"
                            Text="...again...."/>
                     <Image x:Name="AcceptGiftImage" HorizontalOptions="CenterAndExpand"
                            Opacity="0"
@@ -37,14 +38,14 @@
                            LineBreakMode="WordWrap"
                            Opacity="0"
                            Scale="2"
-                           Text="Congratulations! You are entitled to the assistance of one (1) Neil in buying a new phone!"/>
+                           Text="Congratulations! You are entitled to one (1) fully-funded trip to the spa, including a massage!"/>
                     <Label x:Name="AcceptGiftPanelCaptionSecond"
                            HorizontalTextAlignment="Center"
                            FontSize="Micro"
                            LineBreakMode="WordWrap"
                            Opacity="0"
                            Scale="2"
-                           Text="(Neil will also pay for it. no bankrupt plzkthx)"/>
+                           Text="(Neil will probably come with you. who doesn't like massages, amirite)"/>
                 </StackLayout>
             </Grid>
         </ScrollView>

@@ -23,10 +23,8 @@ namespace KChristmas.Core
             if (Settings.LastSeenVersion < CURRENT_VERSION)
             {
                 Settings.GiftAccepted = false;
-                Settings.GiftHints = null;
+                Settings.GiftHintsV2 = null;
                 Settings.PinkieSeenCount = 0;
-                Settings.GiftRedeemed = false;
-                Settings.IntroComplete = false;
             }
             Settings.LastSeenVersion = CURRENT_VERSION;
 

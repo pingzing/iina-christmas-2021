@@ -5,15 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Essentials;
 
 namespace KChristmas.Core
 {
     public partial class MainPage : ContentPage
     {
-        private const uint StartingSpecialEventCooldown = 15;
+        private const uint StartingSpecialEventCooldown = 12;
         private readonly bool SkipCountdown = false;
         private readonly DateTime ChristmasDate = new DateTime(2019, 12, 24, 18, 0, 0);
 
@@ -23,6 +23,7 @@ namespace KChristmas.Core
         private Random rand = new Random();
         private uint CurrentSpecialEventCooldown = 5;
         private PinkieSpecialEvent _pinkieEvent;
+        private SensorSpeed _sensorSpeed = SensorSpeed.Game;
 
         public MainPage(NetworkService networkService)
         {
@@ -37,38 +38,9 @@ namespace KChristmas.Core
             _pinkieEvent = new PinkieSpecialEvent(this, networkService);
         }
 
-        private void InitHints(string hintStringJson)
+        protected override async void OnAppearing()
         {
-            if (Settings.GiftHintsV2 != null)
-            {
-                _giftHints = JsonConvert.DeserializeObject<string[]>(hintStringJson).ToList();
-            }
-        }
-
-        private string GetHint()
-        {
-            if (_giftHints.Count <= 0 && _seenHints.Count > 0)
-            {
-                Debug.WriteLine("SeenHints emptied, GiftHints refilled.");
-                _giftHints = new List<string>(_seenHints);
-                _seenHints.Clear();
-            }
-            if (_giftHints.Count > 0)
-            {
-                int hintIndex = rand.Next() % _giftHints.Count;
-                string hint = _giftHints[hintIndex];
-                _giftHints.RemoveAt(hintIndex);
-                _seenHints.Add(hint);
-                return hint;
-            }
-            else
-            {
-                return "No hints here. Sorry!";
-            }
-        }
-
-        private async void ContentPage_Appearing(object sender, EventArgs e)
-        {
+            base.OnAppearing();
 
             //Set up panel state
             await Task.Delay(1000);
@@ -127,9 +99,79 @@ namespace KChristmas.Core
             Settings.GiftHintsV2 = response;
             InitHints(Settings.GiftHintsV2);
             await UpdatePinkieTask;
+
+            Accelerometer.ShakeDetected += Accelerometer_ShakeDetected;
+            try
+            {
+                if (!Accelerometer.IsMonitoring)
+                {
+                    Accelerometer.Start(_sensorSpeed);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Unable to start listening to Accelerometer: {ex}");
+            }
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Accelerometer.ShakeDetected -= Accelerometer_ShakeDetected;
+            try
+            {
+                if (Accelerometer.IsMonitoring)
+                {
+                    Accelerometer.Stop();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Unable to stop listening to Accelerometer: {ex}");
+            }
+        }
+
+        private void InitHints(string hintStringJson)
+        {
+            if (Settings.GiftHintsV2 != null)
+            {
+                _giftHints = JsonConvert.DeserializeObject<string[]>(hintStringJson).ToList();
+            }
+        }
+
+        private string GetHint()
+        {
+            if (_giftHints.Count <= 0 && _seenHints.Count > 0)
+            {
+                Debug.WriteLine("SeenHints emptied, GiftHints refilled.");
+                _giftHints = new List<string>(_seenHints);
+                _seenHints.Clear();
+            }
+            if (_giftHints.Count > 0)
+            {
+                int hintIndex = rand.Next() % _giftHints.Count;
+                string hint = _giftHints[hintIndex];
+                _giftHints.RemoveAt(hintIndex);
+                _seenHints.Add(hint);
+                return hint;
+            }
+            else
+            {
+                return "No hints here. Sorry!";
+            }
         }
 
         private async void Gift_Clicked(object sender, EventArgs e)
+        {
+            await ShowHint();
+        }
+
+        private async void Accelerometer_ShakeDetected(object sender, EventArgs e)
+        {
+            await ShowHint();
+        }
+
+        private async Task ShowHint()
         {
             var storyboard = new Animation();
             var shakeUpHigh = new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 20, Easing.SpringIn);

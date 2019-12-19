@@ -40,7 +40,10 @@ namespace KChristmas.AzureFunctions
             "Each shake produces an ecstatic squeak.", "You hear a whoosh, and feel the sides of the box inflate slightly.", "You feel the stars turn their baleful gaze upon you.",
             "BEHIND YOU!", "Something prickling at your back...", "Something is wrong.",
             "It's perhaps better if I don't describe the sound the box just made.", "The box thinks angry thoughts at you.", "The box just wants to be loved.",
-            "The box leans into your hand with a sigh.", "Something inside the box starts buzzing.", "\"Really, darling?\", the box sighs."
+            "The box leans into your hand with a sigh.", "Something inside the box starts buzzing.", "\"Really, darling?\", the box sighs.",
+            "One for the show, two to get ready, three for the money, and four to GO!", "Hasa diga, ebowai!", "♪ Hello. My name is Elder Box ♪",
+            "OI, GEROFF ME LAWN", "The box attempts to form a union.", "SYSTEM ARMED",
+            "Over/under on it just being more socks?", "But it hurt itself in its confusion!", "Whispering?"
 
     };
 
