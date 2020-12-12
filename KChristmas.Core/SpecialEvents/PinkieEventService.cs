@@ -9,7 +9,7 @@ using KChristmas.Models;
 
 namespace KChristmas.Core.SpecialEvents
 {
-    public class PinkieSpecialEvent
+    public class PinkieEventService
     {
         private static readonly Guid _firstTimeScriptGuid = Guid.Parse("0b3a9635-c6e2-4bc4-804a-59f614925fd2");
 
@@ -50,7 +50,7 @@ namespace KChristmas.Core.SpecialEvents
 
         private MainPage _mainPageReference;
 
-        public PinkieSpecialEvent(MainPage mainPage, NetworkService networkService)
+        public PinkieEventService(MainPage mainPage, NetworkService networkService)
         {
             _mainPageReference = mainPage;
             _networkService = networkService;
@@ -127,7 +127,7 @@ namespace KChristmas.Core.SpecialEvents
                 { 0.95, 0.98, new Animation(v => {giftBase.TranslationY = v; }, 0, -30, Easing.SpringOut) },
                 { 0.97, 1.0, new Animation(v => {pinkieImage.Source = ImageExtension.GetPlatformIndependentPath("pinkie_woundup_3.png"); }, 0, 0) },
                 { 0.98, 1.0, new Animation(v => {giftBase.TranslationY = v; }, -30, 0, Easing.SpringOut) },
-                { 0.95, 1.0, new Animation(v => { giftTop.TranslationY = v; }, 0, -300, Easing.CubicOut) }
+                { 0.95, 1.0, new Animation(v => { giftTop.TranslationY = v; }, 0, -500, Easing.CubicOut) }
             };
 
             boxShudderSlamOpen.Commit(giftBase, "BoxShduder", 16, (uint)totalMillis);
@@ -141,7 +141,7 @@ namespace KChristmas.Core.SpecialEvents
 
             if (Settings.PinkieSeenCount == 0)
             {
-                await RunPinkieScript(_firstTimeEvent, pinkieImage);                
+                await RunPinkieScript(_firstTimeEvent, pinkieImage);
             }
             else
             {
@@ -171,7 +171,7 @@ namespace KChristmas.Core.SpecialEvents
         {
             Task _; // dummy to keep the compiler quiet
             foreach (var line in script)
-            {                
+            {
                 if (line.ImagePath != null)
                 {
                     pinkieImage.Source = ImageExtension.GetPlatformIndependentPath(line.ImagePath);

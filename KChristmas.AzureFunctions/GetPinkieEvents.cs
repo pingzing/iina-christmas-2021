@@ -63,7 +63,25 @@ namespace KChristmas.AzureFunctions
                 { "pinkie_confused.png", "This isn't Albuquerque!", 4000 },
                 { "pinkie_bounce_up_3.png", "Well, probably, anyway.", 4000 },
                 { null, "I have no idea what an Albuquerque is!", 4000 },
-            }
+            },
+            new PinkieEvent(Guid.Parse("d8025368-f6fd-47c7-ae7e-888ca04e42de"))
+            {
+                { null, "Hi!", 3000 },
+                { null, "So... I heard you have a sister.", 4000 },
+                { null, "I have three!", 3000 },
+                { "pinkie_confused.png", "Is yours as grumpy as my sister Limestone?", 4000 },
+                { "pinkie_bounce_up_3.png", "If she is, you should try what I do!", 4000 },
+                { null, "I bribe her! With pie!", 3000 },
+                { null, "I call it-- *snrk*", 3000 },
+                { null, "PIE-bery! Hehehehe!", 3000 },
+            },
+            new PinkieEvent(Guid.Parse("ff4d57b7-0814-476e-b285-bb06733fd92c"))
+            {
+                { null, "So, I've been aaaaalll across Equestria.", 4000 },
+                { null, "And beyond, even! To some places even *I* couldn't fathom!", 4000 },
+                { null, "So believe me when I say that this present?", 4000 },
+                { null, "Is totally splen-differ-riffic!", 4000 }
+            },
         };
 
         [FunctionName("GetPinkieEvents")]

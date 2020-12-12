@@ -14,15 +14,15 @@ namespace KChristmas.Core
     public partial class MainPage : ContentPage
     {
         private const uint StartingSpecialEventCooldown = 12;
-        private readonly bool SkipCountdown = false;
-        private readonly DateTime ChristmasDate = new DateTime(2019, 12, 24, 18, 0, 0);
+        private readonly bool SkipCountdown = true;
+        private readonly DateTime ChristmasDate = new DateTime(2020, 12, 24, 18, 0, 0);
 
         private NetworkService _networkService;
         private List<string> _giftHints = new List<string>();
         private List<string> _seenHints = new List<string>();
         private Random rand = new Random();
         private uint CurrentSpecialEventCooldown = 5;
-        private PinkieSpecialEvent _pinkieEvent;
+        private PinkieEventService _pinkieService;
         private SensorSpeed _sensorSpeed = SensorSpeed.Game;
 
         public MainPage(NetworkService networkService)
@@ -35,7 +35,7 @@ namespace KChristmas.Core
             _networkService = networkService;
             //Init with locally-cached hints
             InitHints(Settings.GiftHintsV2);
-            _pinkieEvent = new PinkieSpecialEvent(this, networkService);
+            _pinkieService = new PinkieEventService(this, networkService);
         }
 
         protected override async void OnAppearing()
@@ -88,7 +88,7 @@ namespace KChristmas.Core
             }
 
             //Set up gift box hints      
-            Task UpdatePinkieTask = _pinkieEvent.UpdateEventsFromRemote();
+            Task UpdatePinkieTask = _pinkieService.UpdateEventsFromRemote();
             string response = await _networkService.GetGiftHints();
             if (String.IsNullOrWhiteSpace(response))
             {
@@ -213,7 +213,7 @@ namespace KChristmas.Core
             GiftTop.InputTransparent = true;
 
             // For now, we only have one. In the future, we can do some randomness here.            
-            await _pinkieEvent.Run(GiftBase, GiftTop, SpecialEventCanvas);
+            await _pinkieService.Run(GiftBase, GiftTop, SpecialEventCanvas);
 
             GiftBase.InputTransparent = false;
             GiftTop.InputTransparent = false;

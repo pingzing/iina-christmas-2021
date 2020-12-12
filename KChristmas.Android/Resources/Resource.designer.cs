@@ -9095,6 +9095,9 @@ namespace KChristmas.Android
 			// aapt resource value: 0x7F070149
 			public const int tooltip_frame_light = 2131165513;
 			
+			// aapt resource value: 0x7F07014A
+			public const int why_2020 = 2131165514;
+			
 			static Drawable()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

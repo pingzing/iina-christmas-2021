@@ -7,7 +7,7 @@ using Xamarin.Forms;
 namespace KChristmas.Core
 {
     public partial class RedemptionPage : ContentPage
-    {        
+    {
         public RedemptionPage()
         {
             InitializeComponent();
@@ -16,12 +16,12 @@ namespace KChristmas.Core
         private async void ContentPage_Appearing(object sender, EventArgs e)
         {
             if (!Settings.GiftAccepted)
-            {                                
+            {
                 Settings.GiftAccepted = true;
             }
 
             await ShowCompletePanel();
-        }      
+        }
 
         private async Task ShowCompletePanel()
         {
@@ -31,17 +31,25 @@ namespace KChristmas.Core
                 AcceptGiftPanelTopCaption.FadeTo(1, 2000),
                 AcceptGiftPanelTopCaption.ScaleTo(1, 2000));
 
-            await Task.WhenAll(
-                AcceptGiftPanelTopSecondCaption.FadeTo(1, 2000),
-                AcceptGiftPanelTopSecondCaption.ScaleTo(1, 2000));
+            await Task.Delay(4000);
 
             await Task.WhenAll(
                 AcceptGiftImage.ScaleTo(1, 2000),
                 AcceptGiftImage.FadeTo(1, 2000));
 
+            await Task.Delay(4000);
+
+            await Task.WhenAll(
+                AcceptGiftPanelTopSecondCaption.FadeTo(1, 2000),
+                AcceptGiftPanelTopSecondCaption.ScaleTo(1, 2000));
+
+            await Task.Delay(4000);
+
             await Task.WhenAll(
                 AcceptGiftPanelCaption.ScaleTo(1, 2000),
                 AcceptGiftPanelCaption.FadeTo(1, 2000));
+
+            await Task.Delay(2000);
 
             await Task.WhenAll(
                 AcceptGiftPanelCaptionSecond.ScaleTo(1, 2000),
