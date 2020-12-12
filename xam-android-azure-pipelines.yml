@@ -26,7 +26,7 @@ steps:
 - task: DownloadSecureFile@1
   name: apkKeystore
   inputs:
-    secureFile: '2018-and-beyond_keystore'
+    secureFile: '2018-and-beyond.keystore'
 
 - task: AndroidSigning@3
   inputs:
