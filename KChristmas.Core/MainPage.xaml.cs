@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Essentials;
+using System.Threading;
 
 namespace KChristmas.Core
 {
@@ -17,6 +18,7 @@ namespace KChristmas.Core
         private readonly bool SkipCountdown = true;
         private readonly DateTime ChristmasDate = new DateTime(2020, 12, 24, 18, 0, 0);
 
+        private bool _isSpecialEventInProgress = false;
         private NetworkService _networkService;
         private List<string> _giftHints = new List<string>();
         private List<string> _seenHints = new List<string>();
@@ -166,13 +168,24 @@ namespace KChristmas.Core
             await ShowHint();
         }
 
+        private SemaphoreSlim _shakeLock = new SemaphoreSlim(1);
         private async void Accelerometer_ShakeDetected(object sender, EventArgs e)
         {
-            await ShowHint();
+            if (await _shakeLock.WaitAsync(100))
+            {
+                await ShowHint();
+                await Task.Delay(1000);
+                _shakeLock.Release();
+            }
         }
 
         private async Task ShowHint()
         {
+            if (_isSpecialEventInProgress)
+            {
+                return;
+            }
+
             var storyboard = new Animation();
             var shakeUpHigh = new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 20, Easing.SpringIn);
             var fromHighToLow = new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 20, -20, Easing.SpringIn);
@@ -209,6 +222,7 @@ namespace KChristmas.Core
 
         private async Task RandomSpecialEvent()
         {
+            _isSpecialEventInProgress = true;
             GiftBase.InputTransparent = true;
             GiftTop.InputTransparent = true;
 
@@ -217,6 +231,7 @@ namespace KChristmas.Core
 
             GiftBase.InputTransparent = false;
             GiftTop.InputTransparent = false;
+            _isSpecialEventInProgress = false;
         }
 
         public async Task ShowFloatingText(string text, Color? textColor = null)
