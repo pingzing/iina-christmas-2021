@@ -25,13 +25,14 @@ steps:
 
 - task: DownloadSecureFile@1
   name: apkKeystore
+  displayName: "Download APK keystore"
   inputs:
-    secureFile: android_keystore
+    secureFile: 'android_keystore.keystore'
 
 - task: AndroidSigning@3
   inputs:
     apkFiles: '$(outputDirectory)/*.apk'
-    # apksignerKeystoreFile: '$(Agent.TempDirectory)/android_keystore'
+    apksignerKeystoreFile: $(apkKeystore.secureFilePath)
     apksignerKeystorePassword: '$(keystore_password)'
     apksignerKeystoreAlias: '2018-and-beyond'
     apksignerKeyPassword: '$(keystore_password)'
