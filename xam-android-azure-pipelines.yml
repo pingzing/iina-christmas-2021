@@ -24,14 +24,14 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: DownloadSecureFile@1
-  name: keystore
+  name: apkKeystore
   inputs:
-    secureFile: '2018-and-beyond.keystore'
+    secureFile: '2018-and-beyond_keystore'
 
 - task: AndroidSigning@3
   inputs:
     apkFiles: '$(outputDirectory)/*.apk'
-    apksignerKeystoreFile: '$(keystore.secureFilePath)'
+    apksignerKeystoreFile: '$(apkKeystore.secureFilePath)'
     apksignerKeystorePassword: '$(keystore_password)'
     apksignerKeystoreAlias: '2018-and-beyond'
     apksignerKeyPassword: '$(keystore_password)'
