@@ -15,7 +15,7 @@ steps:
 
 - task: NuGetCommand@2
   inputs:
-    restoreSolution: '**/*.sln'
+    restoreSolution: '**/KChristmas-CI-AndroidOnly.sln'
 
 - task: XamarinAndroid@1
   inputs:
