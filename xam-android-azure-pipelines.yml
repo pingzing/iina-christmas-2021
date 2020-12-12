@@ -29,10 +29,15 @@ steps:
   inputs:
     secureFile: 'android_keystore.keystore'
 
+- task: CmdLine@2
+  inputs:
+    script: 'ls $AGENT_TEMPDIRECTORY'
+
+
 - task: AndroidSigning@3
   inputs:
     apkFiles: '$(outputDirectory)/*.apk'
-    apksignerKeystoreFile: $(apkKeystore.secureFilePath)
+    #apksignerKeystoreFile: $(apkKeystore.secureFilePath)
     apksignerKeystorePassword: '$(keystore_password)'
     apksignerKeystoreAlias: '2018-and-beyond'
     apksignerKeyPassword: '$(keystore_password)'
