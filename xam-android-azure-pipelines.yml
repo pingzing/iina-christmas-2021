@@ -12,31 +12,32 @@ variables:
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: "Get latest Nuget tools"
 
 - task: NuGetCommand@2
+  displayName: "Run nuget restore"
   inputs:
     restoreSolution: '**/KChristmas-CI-AndroidOnly.sln'
 
 - task: XamarinAndroid@1
+  displayName: "Build Xamarin Android project"
   inputs:
     projectFile: '**/*droid*.csproj'
     outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
 
-- task: DownloadSecureFile@1
-  name: apkKeystore
-  inputs:
-    secureFile: android_keystore
-
 - task: AndroidSigning@3
+  displayName: "Sign and Zipalign APK"
   inputs:
     apkFiles: '$(outputDirectory)/*.apk'
-    apksignerKeystoreFile: '$(apkKeystore.secureFilePath)'
+    apksignerKeystoreFile: 'android_keystore.keystore'
     apksignerKeystorePassword: '$(keystore_password)'
     apksignerKeystoreAlias: '2018-and-beyond'
     apksignerKeyPassword: '$(keystore_password)'
 
+
 - task: PublishBuildArtifacts@1
+  displayName: "Publish output directory"
   inputs:
     PathtoPublish: '$(outputDirectory)'
     ArtifactName: 'android-apk'
