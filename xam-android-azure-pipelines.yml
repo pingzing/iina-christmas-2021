@@ -23,24 +23,31 @@ steps:
     outputDirectory: '$(outputDirectory)'
     configuration: '$(buildConfiguration)'
 
-- task: DownloadSecureFile@1
-  name: apkKeystore
-  displayName: "Download APK keystore"
+# - task: DownloadSecureFile@1
+#   name: apkKeystore
+#   displayName: "Download APK keystore"
+#   inputs:
+#     secureFile: 'android_keystore.keystore'
+- task: AndroidSigning@3
   inputs:
-    secureFile: 'android_keystore.keystore'
+    apkFiles: '$(outputDirectory)/*.apk'
+    apksignerKeystoreFile: 'android_keystore.keystore'
+    apksignerKeystorePassword: '$(keystore_password)'
+    apksignerKeystoreAlias: '2018-and-beyond'
+    apksignerKeyPassword: '$(keystore_password)'
 
 - task: CmdLine@2
   inputs:
     script: 'ls $AGENT_TEMPDIRECTORY'
 
 
-# - task: AndroidSigning@3
-#   inputs:
-#     apkFiles: '$(outputDirectory)/*.apk'
-#     apksignerKeystoreFile: $(apkKeystore.secureFilePath)
-#     apksignerKeystorePassword: '$(keystore_password)'
-#     apksignerKeystoreAlias: '2018-and-beyond'
-#     apksignerKeyPassword: '$(keystore_password)'
+- task: AndroidSigning@3
+  inputs:
+    apkFiles: '$(outputDirectory)/*.apk'
+    apksignerKeystoreFile: $(apkKeystore.secureFilePath)
+    apksignerKeystorePassword: '$(keystore_password)'
+    apksignerKeystoreAlias: '2018-and-beyond'
+    apksignerKeyPassword: '$(keystore_password)'
 
 - task: PublishBuildArtifacts@1
   inputs:
