@@ -1,8 +1,5 @@
 ﻿using KChristmas.Core.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,7 +9,7 @@ namespace KChristmas.Core
 {
     public partial class App : Application
     {
-        private static readonly Version CURRENT_VERSION = new Version(5, 0, 0);
+        private static readonly Version CURRENT_VERSION = new Version(6, 0, 0);
 
         public NavigationPage Navigation = new NavigationPage();
 

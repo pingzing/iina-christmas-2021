@@ -27,7 +27,7 @@ namespace KChristmas.Core.Helpers
         /// <summary>
         /// A json array of strings.
         /// </summary>
-        public static string GiftHintsV2
+        public static string? GiftHintsV2
         {
             get => Preferences.Get(nameof(GiftHintsV2), null);
             set => Preferences.Set(nameof(GiftHintsV2), value);
@@ -43,7 +43,7 @@ namespace KChristmas.Core.Helpers
         {
             get
             {
-                string lastSeenVersion = Preferences.Get(LastSeenVersionKey, (string)null);
+                string lastSeenVersion = Preferences.Get(LastSeenVersionKey, null);
                 if (String.IsNullOrWhiteSpace(lastSeenVersion))
                 {
                     return LastSeenVersionDefault;

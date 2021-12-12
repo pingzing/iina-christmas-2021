@@ -98,7 +98,7 @@ namespace KChristmas.Core
             }
 
             //Set up gift box hints                  
-            string response = await _networkService.GetGiftHints();
+            string? response = await _networkService.GetGiftHints();
             if (String.IsNullOrWhiteSpace(response))
             {
                 return;
@@ -140,7 +140,7 @@ namespace KChristmas.Core
             }
         }
 
-        private void InitHints(string hintStringJson)
+        private void InitHints(string? hintStringJson)
         {
             if (Settings.GiftHintsV2 != null)
             {
