@@ -8,7 +8,7 @@ namespace KChristmas.Android
     [Activity(Label = "Merry Christmas, Kaisa!", Icon = "@drawable/icon",
         Theme = "@style/MainTheme", MainLauncher = true,
         ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
-    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    public class MainActivity : Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle bundle)
         {
@@ -17,7 +17,8 @@ namespace KChristmas.Android
 
             base.OnCreate(bundle);
 
-            global::Xamarin.Forms.Forms.Init(this, bundle);
+            Xamarin.Essentials.Platform.Init(this, bundle);
+            Xamarin.Forms.Forms.Init(this, bundle);
             LoadApplication(new App());
         }
     }

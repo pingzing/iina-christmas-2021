@@ -14,9 +14,9 @@ namespace KChristmas.Core
 {
     public partial class MainPage : ContentPage
     {
-        private const uint StartingSpecialEventCooldown = 12;
+        private const uint StartingSpecialEventCooldown = 20;
         private readonly bool SkipCountdown = true;
-        private readonly DateTime ChristmasDate = new DateTime(2020, 12, 24, 18, 0, 0);
+        private readonly DateTime ChristmasDate = new DateTime(2021, 12, 24, 18, 0, 0);
 
         private bool _isSpecialEventInProgress = false;
         private NetworkService _networkService;
@@ -26,6 +26,7 @@ namespace KChristmas.Core
         private uint CurrentSpecialEventCooldown = 5;
         private PinkieEventService _pinkieService;
         private SensorSpeed _sensorSpeed = SensorSpeed.Game;
+        private DateTimeOffset? _lastShownHintTime = null;
 
         public MainPage(NetworkService networkService)
         {
@@ -60,25 +61,32 @@ namespace KChristmas.Core
             {
                 //Set up countdown timer
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
-                {
+                {                    
                     var timeTillChristmas = ChristmasDate - DateTime.Now;
                     if (timeTillChristmas > TimeSpan.Zero)
                     {
-                        TimerLabel.Text = $"{timeTillChristmas.Days}d {timeTillChristmas.Hours}h {timeTillChristmas.Minutes}m {timeTillChristmas.Seconds}s";
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            TimerLabel.Text = $"{timeTillChristmas.Days}d {timeTillChristmas.Hours}h {timeTillChristmas.Minutes}m {timeTillChristmas.Seconds}s";
+                        });
                         return true;
                     }
                     else
                     {
-                        TimerLabel.Text = "0d 0h 0m 0s";
-                        NextButton.IsVisible = true;
-                        NextButton.InputTransparent = false;
-                        Task.WhenAll(
-                            TooEarlyLabel1.FadeTo(0, 2000),
-                            TooEarlyLabel2.FadeTo(0, 2000),
-                            TimerLabel.TranslateTo(0, 50, 4000),
-                            TimerLabel.ScaleTo(2, 4000),
-                            NextButton.FadeTo(1, 4000)
-                        );
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            TimerLabel.Text = "0d 0h 0m 0s";
+                            NextButton.IsVisible = true;
+                            NextButton.InputTransparent = false;
+                            Task.WhenAll(
+                                TooEarlyLabel1.FadeTo(0, 2000),
+                                TooEarlyLabel2.FadeTo(0, 2000),
+                                TimerLabel.TranslateTo(0, 50, 4000),
+                                TimerLabel.ScaleTo(2, 4000),
+                                NextButton.FadeTo(1, 4000)
+                            );
+                        });
+
                         return false;
                     }
                 });
@@ -89,8 +97,7 @@ namespace KChristmas.Core
                 NextButton.InputTransparent = false;
             }
 
-            //Set up gift box hints      
-            Task UpdatePinkieTask = _pinkieService.UpdateEventsFromRemote();
+            //Set up gift box hints                  
             string response = await _networkService.GetGiftHints();
             if (String.IsNullOrWhiteSpace(response))
             {
@@ -100,7 +107,7 @@ namespace KChristmas.Core
             // Update local cache
             Settings.GiftHintsV2 = response;
             InitHints(Settings.GiftHintsV2);
-            await UpdatePinkieTask;
+            await _pinkieService.UpdateEventsFromRemote();
 
             Accelerometer.ShakeDetected += Accelerometer_ShakeDetected;
             try
@@ -159,7 +166,7 @@ namespace KChristmas.Core
             }
             else
             {
-                return "No hints here. Sorry!";
+                return "No hints here. Sorry! Maybe try restarting the app?";
             }
         }
 
@@ -185,6 +192,15 @@ namespace KChristmas.Core
             {
                 return;
             }
+
+            // A half-second cooldown on hints, so users can't accidentally spam themselves.
+            var now = DateTimeOffset.UtcNow;
+            if (_lastShownHintTime != null && now - _lastShownHintTime < TimeSpan.FromMilliseconds(500))
+            {
+                return;
+            }
+
+            _lastShownHintTime = now;
 
             var storyboard = new Animation();
             var shakeUpHigh = new Animation(v => { GiftBase.TranslationY = v; GiftTop.TranslationY = v; }, 0, 20, Easing.SpringIn);

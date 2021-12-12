@@ -28,32 +28,32 @@ namespace KChristmas.Core
             await Task.Delay(1000);
 
             await Task.WhenAll(
-                AcceptGiftPanelTopCaption.FadeTo(1, 2000),
-                AcceptGiftPanelTopCaption.ScaleTo(1, 2000));
+                AcceptGiftPanelCaption1.FadeTo(1, 2000),
+                AcceptGiftPanelCaption1.ScaleTo(1, 2000));
 
-            await Task.Delay(4000);
-
-            await Task.WhenAll(
-                AcceptGiftImage.ScaleTo(1, 2000),
-                AcceptGiftImage.FadeTo(1, 2000));
-
-            await Task.Delay(4000);
+            await Task.Delay(3000);
 
             await Task.WhenAll(
-                AcceptGiftPanelTopSecondCaption.FadeTo(1, 2000),
-                AcceptGiftPanelTopSecondCaption.ScaleTo(1, 2000));
-
-            await Task.Delay(4000);
-
-            await Task.WhenAll(
-                AcceptGiftPanelCaption.ScaleTo(1, 2000),
-                AcceptGiftPanelCaption.FadeTo(1, 2000));
+                AcceptGiftPanelCaption2.FadeTo(1, 2000),
+                AcceptGiftPanelCaption2.ScaleTo(1, 2000));
 
             await Task.Delay(2000);
 
             await Task.WhenAll(
-                AcceptGiftPanelCaptionSecond.ScaleTo(1, 2000),
-                AcceptGiftPanelCaptionSecond.FadeTo(1, 2000));
+                AcceptGiftPanelCaption3.ScaleTo(1, 2000),
+                AcceptGiftPanelCaption3.FadeTo(1, 2000));
+
+            await Task.Delay(4000);
+
+            await Task.WhenAll(
+                AcceptGiftPanelCaption4.ScaleTo(1, 2000),
+                AcceptGiftPanelCaption4.FadeTo(1, 2000));
+
+            await Task.Delay(3000);
+
+            await Task.WhenAll(
+                AcceptGiftPanelCaption5.ScaleTo(1, 2000),
+                AcceptGiftPanelCaption5.FadeTo(1, 2000));
         }
     }
 }

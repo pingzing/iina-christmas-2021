@@ -6,6 +6,16 @@
              Appearing="ContentPage_Appearing"
              Title="Yaaaaay!">
 
+    <ContentPage.Resources>
+        <Style x:Key="RedemptionLabelStyle" TargetType="Label">
+            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="Scale" Value="2"/>
+            <Setter Property="FontSize" Value="Large"/>
+            <Setter Property="LineBreakMode" Value="WordWrap"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+
     <Grid x:Name="ContentRoot" Padding="10" BackgroundColor="Transparent">
         <ScrollView>
             <Grid x:Name="AcceptGiftPanel">
@@ -16,35 +26,28 @@
 
                 <StackLayout HorizontalOptions="CenterAndExpand"
                              VerticalOptions="CenterAndExpand">
-                    <Label x:Name="AcceptGiftPanelTopCaption"
-                           HorizontalTextAlignment="Center"
-                           LineBreakMode="WordWrap"
-                           Opacity="0"
-                           Scale="2"
-                           Text="So I think we can all agree that 2020 has been... not great."/>
-                    <Image x:Name="AcceptGiftImage" HorizontalOptions="CenterAndExpand"
-                           Opacity="0"
-                           Scale="2"
-                           Source="{ext:ImageExtension why_2020.png}"/>
-                    <Label x:Name="AcceptGiftPanelTopSecondCaption"
-                           HorizontalTextAlignment="Center"
-                           LineBreakMode="WordWrap"
-                           Opacity="0"
-                           Scale="2"                           
-                           Text="And this year, the simple pleasures are something we could really use, as well as a bit of something to look forward to."/>
-                    <Label x:Name="AcceptGiftPanelCaption"
-                           HorizontalTextAlignment="Center"
-                           LineBreakMode="WordWrap"
-                           Opacity="0"
-                           Scale="2"
-                           Text="So, this year, the present is a promise to take us both out to a nice steak dinner once we can actually do that again."/>
-                    <Label x:Name="AcceptGiftPanelCaptionSecond"
-                           HorizontalTextAlignment="Center"
-                           FontSize="Micro"
-                           LineBreakMode="WordWrap"
-                           Opacity="0"
-                           Scale="2"
-                           Text="(And if it looks like that's not gonna happen, we can figure something else out, I dunno)"/>
+                    
+                    <Label x:Name="AcceptGiftPanelCaption1"
+                           Style="{StaticResource RedemptionLabelStyle}"
+                           Text="Whew. 2021 has been a heck of a lot better than 2020."/>
+
+                    <Label x:Name="AcceptGiftPanelCaption2"
+                           Style="{StaticResource RedemptionLabelStyle}"                         
+                           Text="But it still hasn't been, uh, ideal."/>
+
+                    <Label x:Name="AcceptGiftPanelCaption3"
+                           Style="{StaticResource RedemptionLabelStyle}"
+                           Text="So, in recognition of the fact that, while better than last, this year has still been pretty stressful, this year, the present is:"/>
+                    
+                    <Label x:Name="AcceptGiftPanelCaption4"
+                           Style="{StaticResource RedemptionLabelStyle}"
+                           FontAttributes="Bold"
+                           Text="A recurring subscription to a massage place!"/>
+
+                    <Label x:Name="AcceptGiftPanelCaption5"
+                           Style="{StaticResource RedemptionLabelStyle}"                           
+                           FontSize="Small"
+                           Text="(This isn't a gift card, because I think you'll want to figure out which place is good for you, and the whens and hows yourself. I'll help!)"/>
                 </StackLayout>
             </Grid>
         </ScrollView>

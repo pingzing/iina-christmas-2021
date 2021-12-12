@@ -82,6 +82,14 @@ namespace KChristmas.AzureFunctions
                 { null, "So believe me when I say that this present?", 4000 },
                 { null, "Is totally splen-differ-riffic!", 4000 }
             },
+            new PinkieEvent(Guid.Parse("b1690007-4d85-4eaf-a629-c7ad22151fb1"))
+            {
+                { null, "On the one hoof, I spend a lot of my time baking sweet treats.", 4000 },
+                { null, "So I know what it's like to have to wait for something!", 3000 },
+                { null, "But I also know that waiting is the wor-hor-hor-hoooorst!", 3000 },
+                { "pinkie_confused.png", "So if you're shaking this box and totally excited about what's inside and can't wait?", 4500 },
+                { "pinkie_bounce_up_3.png", "I am TOTALLY right there with you!", 3000 },
+            }
         };
 
         [FunctionName("GetPinkieEvents")]

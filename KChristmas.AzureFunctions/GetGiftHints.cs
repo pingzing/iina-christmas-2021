@@ -100,7 +100,7 @@ namespace KChristmas.AzureFunctions
             "The box just wants to be loved.",
             "The box leans into your hand with a sigh.",
             "Something inside the box starts buzzing.",
-            "\"Really, darling?\", the box sighs.",
+            "\"Really, darling?\" the box sighs.",
             "One for the show, two to get ready, three for the money, and four to GO!",
             "Hasa diga, ebowai!",
             "♪ Hello. My name is Elder Box ♪",
@@ -118,10 +118,22 @@ namespace KChristmas.AzureFunctions
             "PHaaS: Present Hints as a Service!",
             "Fully Automated Luxury Gay Space Communism--now with more box!",
             "Something shifts. You taste blue, and suddenly feel kind of rhubarb.",
-            "\"Man, fuck 2020,\" the box sighs.",
+            "\"Man, glad 2020 is over,\" the box sighs.",
             "WHAT IS LOVE",
             "BABY DON'T HURT ME",
-
+            "Did you know that boxes are native to Rectanglia?",
+            "Text 220-BOX for more exciting box facts!",
+            "From hell's heart, the contents of the box seem... cozy?",
+            "\"What is a box?\" the box sighs, \"A a miserable pile of wrapped secrets!\"",
+            "What d'you do with a drunken box? (EARLAI IN THE MOR-NIN)",
+            "The box winks at you seductively.",
+            "The box attempts to wink at you seductively, but just sort of scrunches up instead.",
+            "\"Back in my day, in the box mines--!\"\nOh no, here he goes again.",
+            "You attempt to shake the box, but bash your shin on a coffee table. A nearby orc glares at you.",
+            "\"Oh!\"",
+            "\"My, aren't you a forward one...\"",
+            "What would you do if, in the box was a fox, that wanted some lox?",
+            "That's weird. Something tastes pink.",
     };
 
         [FunctionName("GetGiftHints")]

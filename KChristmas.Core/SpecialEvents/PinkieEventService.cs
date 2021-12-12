@@ -18,12 +18,17 @@ namespace KChristmas.Core.SpecialEvents
             { "pinkie_bounce_up_3.png", "Hi!", 3000 },
             { "pinkie_confused.png", "Hey, wait a minute...", 4000 },
             { null, "...this isn't the Hearth's Warming Eve party!", 4000 },
-            { "pinkie_bounce_up_3.png", "Ohmigosh, I gotta get going!", 4000 },
-            { null, "I hope you're having lots and lots of fun though!", 3000 },
-            { null, "Byeeeee!", 3000 }
+            { null, "...", 2000 },
+            { null, "...haaaaang on a second.", 3000 },
+            { "pinkie_bounce_up_3.png", "We've met before, haven't we?", 3000 },
+            { null, "I *totally* recognize you! Ohmigosh, this is so exciting!", 4000 },
+            { null, "How are you doing? Things are pretty great over here!", 3000 },
+            { "pinkie_confused.png", "Oh, shoot, I gotta run", 3000 },
+            { "pinkie_bounce_up_3.png", "It was really great to run into you again though! Byeeee!", 3000 },
         };
 
-        // Doesn't include the first time script, as it's a special case.
+        // A few built-in Pinkie events, to make sure there are at least a few.
+        // Doesn't include the first time script, as it's a special case.        
         private List<PinkieEvent> _pinkieEvents = new List<PinkieEvent>
         {
             new PinkieEvent(Guid.Parse("73d3b631-41b2-4fc3-a9e9-543c7675e6a8")) {
@@ -71,7 +76,7 @@ namespace KChristmas.Core.SpecialEvents
             double pinkieHeight = 94;
             double pinkieWidth = 94;
 
-            Image pinkieImage = new Image
+            Image? pinkieImage = new Image
             {
                 HeightRequest = 94,
                 WidthRequest = 94,
@@ -168,8 +173,7 @@ namespace KChristmas.Core.SpecialEvents
         }
 
         private async Task RunPinkieScript(PinkieEvent script, Image pinkieImage)
-        {
-            Task _; // dummy to keep the compiler quiet
+        {            
             foreach (var line in script)
             {
                 if (line.ImagePath != null)

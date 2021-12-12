@@ -1,41 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>    
-    <DebugType>pdbonly</DebugType>
-    <DebugSymbols>True</DebugSymbols>
-  </PropertyGroup>  
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>8.0</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="App.xaml" />
-    <None Remove="MainPage.xaml" />
-    <None Remove="RedemptionPage.xaml" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+		<PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+		<PackageReference Include="Xamarin.Forms" Version="5.0.0.2244" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.8.0.1687" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\KChristmas.Models\KChristmas.Models.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\KChristmas.Models\KChristmas.Models.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Extensions\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="RedemptionPage.xaml.cs">
-      <DependentUpon>RedemptionPage.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Update="App.xaml">
+			<Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+		</EmbeddedResource>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+		<EmbeddedResource Update="MainPage.xaml">
+			<Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+		</EmbeddedResource>
+
+		<EmbeddedResource Update="RedemptionPage.xaml">
+			<Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+		</EmbeddedResource>
+	</ItemGroup>
 
 </Project>
