@@ -15,7 +15,7 @@ namespace KChristmas.Core
     public partial class MainPage : ContentPage
     {
         private const uint StartingSpecialEventCooldown = 20;
-        private readonly bool SkipCountdown = true;
+        private readonly bool SkipCountdown = false;
         private readonly DateTime ChristmasDate = new DateTime(2021, 12, 24, 18, 0, 0);
 
         private bool _isSpecialEventInProgress = false;
