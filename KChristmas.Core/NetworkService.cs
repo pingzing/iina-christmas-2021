@@ -23,9 +23,11 @@ namespace KChristmas.Core
         {
             // Android emulators sit behind a virutal router, so they need to use a differnet IP to hit
             // the dev machine's localhost.
-             _baseUrl = DeviceInfo.Platform == DevicePlatform.Android 
+#if DEBUG
+            _baseUrl = DeviceInfo.Platform == DevicePlatform.Android 
                 ? "http://10.0.2.2:7071/"
                 : "http://localhost:7071/";
+#endif
             _httpClient = new HttpClient();
         }
 
