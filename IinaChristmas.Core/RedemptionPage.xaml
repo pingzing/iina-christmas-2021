@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ext="clr-namespace:IinaChristmas.Core.XamlExtensions"
+             x:Class="IinaChristmas.Core.RedemptionPage"
+             Appearing="ContentPage_Appearing"
+             Title="Yaaaaay!">
+
+    <ContentPage.Resources>
+        <Style x:Key="RedemptionLabelStyle" TargetType="Label">
+            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="Scale" Value="2"/>
+            <Setter Property="FontSize" Value="Large"/>
+            <Setter Property="LineBreakMode" Value="WordWrap"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid x:Name="ContentRoot" Padding="10" BackgroundColor="Transparent">
+        <ScrollView>
+            <Grid x:Name="AcceptGiftPanel">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackLayout HorizontalOptions="CenterAndExpand"
+                             VerticalOptions="CenterAndExpand">
+                    
+                    <Label x:Name="AcceptGiftPanelCaption1"
+                           Style="{StaticResource RedemptionLabelStyle}"
+                           Text="So it's finally Christmas!"/>
+
+                    <Label x:Name="AcceptGiftPanelCaption2"
+                           Style="{StaticResource RedemptionLabelStyle}"                         
+                           Text="Are you comfy?"/>
+
+                    <Label x:Name="AcceptGiftPanelCaption3"
+                           Style="{StaticResource RedemptionLabelStyle}"
+                           >
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Are you"/>
+                                <Span FontSize="30" Text=" ready" FontAttributes="Bold"/>
+                                <Span Text="?"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    
+                    <Label x:Name="AcceptGiftPanelCaption4"
+                           Style="{StaticResource RedemptionLabelStyle}"                  
+                           FontAttributes="Bold"
+                           Text="THIS CHRISTMAS..."/>
+
+                    <Label x:Name="AcceptGiftPanelCaption5"
+                           Style="{StaticResource RedemptionLabelStyle}"
+                           Text="I... gave you my heart????"/>
+
+                    <Label x:Name="AcceptGiftPanelCaption6"
+                           Style="{StaticResource RedemptionLabelStyle}"
+                           Text="Wait, no, that's not right. Hang on."/>
+
+                    <Label x:Name="AcceptGiftPanelCaption7"
+                           Style="{StaticResource RedemptionLabelStyle}"
+                           FontAttributes="Italic"
+                           Text="The sounds of furious note shuffling can be heard."/>
+
+                    <Label x:Name="AcceptGiftPanelCaption8"
+                           Style="{StaticResource RedemptionLabelStyle}"                           
+                           Text="Here it is! Found it. *ahem*"/>
+
+                    <Label x:Name="AcceptGiftPanelCaption9"
+                           Style="{StaticResource RedemptionLabelStyle}"                           
+                           Text="This is an official voucher, good for one (1) bag of irtokarkki, courtesy of your friends in Finland (🇫🇮)."/>
+
+                    <Label x:Name="AcceptGiftPanelCaption10"
+                           Style="{StaticResource RedemptionLabelStyle}"                           
+                           FontSize="Small"
+                           Text="(Redeemable whenever stomach conditions allow.)"/>
+
+                    <Label x:Name="AcceptGiftPanelCaption11"                           
+                           Style="{StaticResource RedemptionLabelStyle}"                                                      
+                           Text="Merry Christmas!"/>
+                </StackLayout>
+            </Grid>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>
