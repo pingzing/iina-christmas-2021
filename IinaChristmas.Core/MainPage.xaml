@@ -65,6 +65,18 @@
 
             <!--This is where the floating hint labels go. They're all stacked on Row 0.-->
 
+            <Rectangle x:Name="SecretButton"
+                    Grid.Row="1"
+                    Opacity="0"
+                    BackgroundColor="Red"
+                    HeightRequest="30"
+                    HorizontalOptions="FillAndExpand" VerticalOptions="End">
+                <Rectangle.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="2"
+                                          Tapped="SecretButton_Tapped"/>
+                </Rectangle.GestureRecognizers>
+            </Rectangle>
+
             <Button x:Name="NextButton"
                     Grid.Row="1"
                     BackgroundColor="#ff59ec"

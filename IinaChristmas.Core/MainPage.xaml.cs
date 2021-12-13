@@ -15,7 +15,7 @@ namespace IinaChristmas.Core
     public partial class MainPage : ContentPage
     {
         private const uint StartingSpecialEventCooldown = 40;
-        private readonly bool SkipCountdown = true;
+        private readonly bool SkipCountdown = false;
         private readonly DateTime ChristmasDate = new DateTime(2021, 12, 24, 18, 0, 0);
 
         private bool _isSpecialEventInProgress = false;
@@ -287,6 +287,12 @@ namespace IinaChristmas.Core
             await TooEarlyPanel.FadeTo(0, 1000);
 
             await ((App)App.Current).Navigation.PushAsync(new RedemptionPage());
+        }
+
+        private void SecretButton_Tapped(object sender, EventArgs e)
+        {
+            NextButton.Opacity = 1;
+            NextButton.InputTransparent = false;
         }
     }
 }
